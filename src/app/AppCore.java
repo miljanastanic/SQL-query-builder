@@ -5,6 +5,7 @@ import database.settings.Settings;
 import database.settings.SettingsImpl;
 import gui.table.GUI;
 import gui.table.TableModel;
+import resource.implementation.InformationResource;
 import utils.Constants;
 
 public class AppCore {
@@ -27,5 +28,9 @@ public class AppCore {
         settingsImpl.addParameter("mssql_password", Constants.MSSQL_PASSWORD);
         return settingsImpl;
 
+    }
+
+    public void loadResource(){
+        //InformationResource informationResource = (InformationResource)
     }
 }
