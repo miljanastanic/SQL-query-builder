@@ -1,10 +1,15 @@
 package gui;
 
 import app.AppCore;
+import observer.Notification;
+import observer.NotificationCode;
+import observer.Subscriber;
+import resource.implementation.InformationResource;
 
 import javax.swing.*;
+import javax.swing.table.TableModel;
 
-public class MainFrame {
+public class MainFrame implements Subscriber {
 
         private static MainFrame instance = null;
 
@@ -33,5 +38,13 @@ public class MainFrame {
             //this.jTable = new JTable()
 
         }
-        //update
+
+    @Override
+    public void update(Notification notification) {
+        if (notification.getCode() == NotificationCode.RESOURCE_LOADED){
+            System.out.println((InformationResource)notification.getData());
+        }else{
+            jTable.setModel((TableModel)notification.getData());
+        }
+    }
 }
