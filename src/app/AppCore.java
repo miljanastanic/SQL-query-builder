@@ -5,6 +5,7 @@ import database.DatabaseImpl;
 import database.repositories.MSSQLrepository;
 import database.settings.Settings;
 import database.settings.SettingsImpl;
+import gui.GUIImpl;
 import gui.table.GUI;
 import gui.table.TableModel;
 import observer.Notification;
@@ -22,7 +23,7 @@ public class AppCore extends PublisherImpl {
     public AppCore() {
         this.settings = initialiseSettings();
         this.database = new DatabaseImpl(new MSSQLrepository(this.settings));
-        this.gui = new TableModel();
+        this.gui = new GUIImpl(new TableModel());
     }
 
     private Settings initialiseSettings(){
@@ -40,13 +41,10 @@ public class AppCore extends PublisherImpl {
         this.notifySubscribers(new Notification(NotificationCode.RESOURCE_LOADED,informationResource));
     }
     public void readDataFromTable(String fromTable){
-        this.getTableModel().setRows(this.database.readDataFromTable(fromTable));
+        gui.getTableModel().setRows(this.database.readDataFromTable(fromTable));
     }
+
     public TableModel getTableModel() {
         return gui.getTableModel();
-    } //PITAJANU
-
-   // public void setGui(GUI gui) {
-       // this.gui = gui;
-   // }
+    }
 }

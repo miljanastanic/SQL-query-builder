@@ -1,4 +1,4 @@
-package gui;
+package gui.table;
 
 import app.AppCore;
 import observer.Notification;
@@ -15,6 +15,7 @@ public class MainFrame extends JFrame implements Subscriber {
     private static MainFrame instance = null;
 
     private AppCore appCore;
+    private TableModel tableModel;
     private JTable jTable;
     private JPanel jPanel;
     private JScrollPane jScrollPane;

@@ -1,9 +1,14 @@
 package gui.table;
 
+import observer.Subscriber;
+
 import javax.swing.table.DefaultTableModel;
 
-public interface GUI{
+public interface GUI extends Subscriber {
 
-    void updateModel();
+    void start();
+
     TableModel getTableModel();
+    //void updateModel();
+    //TableModel getTableModel();
 }

@@ -6,11 +6,10 @@ import javax.swing.table.DefaultTableModel;
 import java.util.List;
 import java.util.Vector;
 
-public class TableModel extends DefaultTableModel implements GUI{
+public class TableModel extends DefaultTableModel{
 
     private List<Row> rows;
 
-    @Override
     public void updateModel() {
 
         int columnCount = rows.get(1).getFields().keySet().size();
@@ -24,7 +23,6 @@ public class TableModel extends DefaultTableModel implements GUI{
         setDataVector(dataVector, columnVector);
     }
 
-    @Override
     public TableModel getTableModel() {
         return this;
     }

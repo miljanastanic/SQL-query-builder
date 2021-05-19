@@ -1,6 +1,6 @@
 package app;
 
-import gui.MainFrame;
+import gui.table.MainFrame;
 
 public class Main {
 
