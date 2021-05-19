@@ -1,7 +1,9 @@
 package gui.table;
 
-public interface GUI {
+import javax.swing.table.DefaultTableModel;
+
+public interface GUI{
 
     void updateModel();
-
+    TableModel getTableModel();
 }

@@ -24,6 +24,11 @@ public class TableModel extends DefaultTableModel implements GUI{
         setDataVector(dataVector, columnVector);
     }
 
+    @Override
+    public TableModel getTableModel() {
+        return this;
+    }
+
     public List<Row> getRows() {
         return rows;
     }
@@ -32,4 +37,6 @@ public class TableModel extends DefaultTableModel implements GUI{
         this.rows = rows;
         updateModel();
     }
+
+
 }

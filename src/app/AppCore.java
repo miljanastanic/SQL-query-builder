@@ -5,10 +5,11 @@ import database.settings.Settings;
 import database.settings.SettingsImpl;
 import gui.table.GUI;
 import gui.table.TableModel;
+import observer.PublisherImpl;
 import resource.implementation.InformationResource;
 import utils.Constants;
 
-public class AppCore {
+public class AppCore extends PublisherImpl {
 
     private Database database;
     private Settings settings;
@@ -32,5 +33,13 @@ public class AppCore {
 
     public void loadResource(){
         //InformationResource informationResource = (InformationResource)
+    }
+
+    public GUI getGui() {
+        return gui;
+    }
+
+    public void setGui(GUI gui) {
+        this.gui = gui;
     }
 }
