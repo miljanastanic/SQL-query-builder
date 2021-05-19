@@ -10,5 +10,6 @@ public class Main {
         mainFrame.setAppCore(appCore);
 
 
+
     }
 }

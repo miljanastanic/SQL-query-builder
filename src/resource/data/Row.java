@@ -8,7 +8,7 @@ public class Row {
     private String name;
     private Map<String, Object> fields;
 
-    public Row(Map<String, Object> fields) {
+    public Row() {
         this.fields = new HashMap<>();
 
     }

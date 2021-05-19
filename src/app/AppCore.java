@@ -1,10 +1,14 @@
 package app;
 
 import database.Database;
+import database.DatabaseImpl;
+import database.repositories.MSSQLrepository;
 import database.settings.Settings;
 import database.settings.SettingsImpl;
 import gui.table.GUI;
 import gui.table.TableModel;
+import observer.Notification;
+import observer.NotificationCode;
 import observer.PublisherImpl;
 import resource.implementation.InformationResource;
 import utils.Constants;
@@ -17,7 +21,7 @@ public class AppCore extends PublisherImpl {
 
     public AppCore() {
         this.settings = initialiseSettings();
-       // this.database = new dbimpl
+        this.database = new DatabaseImpl(new MSSQLrepository(this.settings));
         this.gui = new TableModel();
     }
 
@@ -32,14 +36,17 @@ public class AppCore extends PublisherImpl {
     }
 
     public void loadResource(){
-        //InformationResource informationResource = (InformationResource)
+        InformationResource informationResource = (InformationResource)this.database.loadResource();
+        this.notifySubscribers(new Notification(NotificationCode.RESOURCE_LOADED,informationResource));
     }
+    public void readDataFromTable(String fromTable){
+        gui.getTableModel().setRows(this.database.readDataFromTable(fromTable));
+    }
+    public TableModel getTableModel() {
+        return gui.getTableModel();
+    } //PITAJANU
 
-    public GUI getGui() {
-        return gui;
-    }
-
-    public void setGui(GUI gui) {
-        this.gui = gui;
-    }
+   // public void setGui(GUI gui) {
+       // this.gui = gui;
+   // }
 }

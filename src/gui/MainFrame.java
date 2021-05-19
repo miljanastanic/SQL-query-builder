@@ -86,7 +86,7 @@ public class MainFrame extends JFrame implements Subscriber {
     public void setAppCore(AppCore appCore){
         this.appCore = appCore;
         this.appCore.addSubscriber(this);
-        jTable.setModel(appCore.getGui().getTableModel());
+        jTable.setModel(appCore.getTableModel()); //PITAJ ANNU
 
     }
 
