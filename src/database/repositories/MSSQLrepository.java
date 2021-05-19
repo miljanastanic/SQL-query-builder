@@ -82,9 +82,9 @@ public class MSSQLrepository implements Repository{
 
         List<Row>rows = new ArrayList<>();
         try {
-            this.initialiseConnection();
+            initialiseConnection();
 
-            String query = "SELECT * FROM" + from;
+            String query = "SELECT * FROM " + from;
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet rs = preparedStatement.executeQuery();
 

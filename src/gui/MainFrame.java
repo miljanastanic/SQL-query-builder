@@ -49,15 +49,12 @@ public class MainFrame extends JFrame implements Subscriber {
         jPanel.setLayout(new BorderLayout());
         jPanel.setBackground(Color.WHITE);
 
-        jScrollPane = new JScrollPane();
-        jScrollPane.setSize(new Dimension(700,550));
-        jScrollPane.setBackground(Color.WHITE);
-
         jTable = new JTable();
         jTable.setBackground(Color.WHITE);
-        jTable.setPreferredScrollableViewportSize(new Dimension(700,550));
+        jTable.setPreferredScrollableViewportSize(new Dimension(700,500));
         jTable.setFillsViewportHeight(true);
-        jTable.add(jScrollPane);
+
+        jScrollPane = new JScrollPane(jTable);
 
         jTextArea = new JTextArea();
         jTextArea.setBackground(Color.WHITE);
@@ -71,10 +68,10 @@ public class MainFrame extends JFrame implements Subscriber {
 
         jPanel.add(scroll);
 
-        jSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,jPanel,jTable);
+        jSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,jPanel,jScrollPane);
         jSplitPane.setBackground(Color.WHITE);
         jSplitPane.setOneTouchExpandable(true);
-        jSplitPane.setDividerLocation(50);
+        jSplitPane.setDividerLocation(100);
 
         this.add(jSplitPane, BorderLayout.CENTER);
 
@@ -97,5 +94,9 @@ public class MainFrame extends JFrame implements Subscriber {
         }else{
             jTable.setModel((TableModel)notification.getData());
         }
+    }
+
+    public AppCore getAppCore() {
+        return appCore;
     }
 }

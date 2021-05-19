@@ -40,7 +40,7 @@ public class AppCore extends PublisherImpl {
         this.notifySubscribers(new Notification(NotificationCode.RESOURCE_LOADED,informationResource));
     }
     public void readDataFromTable(String fromTable){
-        gui.getTableModel().setRows(this.database.readDataFromTable(fromTable));
+        this.getTableModel().setRows(this.database.readDataFromTable(fromTable));
     }
     public TableModel getTableModel() {
         return gui.getTableModel();
