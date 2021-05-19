@@ -1,6 +1,9 @@
 package gui.table;
 
 import app.AppCore;
+import gui.controller.ActionManager;
+import gui.controller.RunButton;
+import javafx.scene.control.ToolBar;
 import observer.Notification;
 import observer.NotificationCode;
 import observer.Subscriber;
@@ -15,6 +18,7 @@ public class MainFrame extends JFrame implements Subscriber {
     private static MainFrame instance = null;
 
     private AppCore appCore;
+    private ActionManager actionManager;
     private TableModel tableModel;
     private JTable jTable;
     private JPanel jPanel;
@@ -35,6 +39,8 @@ public class MainFrame extends JFrame implements Subscriber {
 
     }
     private void initialise (){
+
+        actionManager = new ActionManager();
 
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension screenSize = toolkit.getScreenSize();
@@ -61,11 +67,12 @@ public class MainFrame extends JFrame implements Subscriber {
         jTextArea.setBackground(Color.WHITE);
         jTextArea.setSelectedTextColor(Color.BLUE);
 
-
         JScrollPane scroll = new JScrollPane (jTextArea);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
+        RunToolBar runToolBar = new RunToolBar();
+        jPanel.add(runToolBar,BorderLayout.EAST);
 
         jPanel.add(scroll);
 
@@ -99,5 +106,9 @@ public class MainFrame extends JFrame implements Subscriber {
 
     public AppCore getAppCore() {
         return appCore;
+    }
+
+    public ActionManager getActionManager() {
+        return actionManager;
     }
 }
