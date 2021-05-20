@@ -9,5 +9,6 @@ public class RunToolBar extends JToolBar {
         setFloatable(true);
         setBackground(Color.WHITE);
         add(MainFrame.getInstance().getActionManager().getRunButton());
+        add(MainFrame.getInstance().getActionManager().getClearButton());
     }
 }

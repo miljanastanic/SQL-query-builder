@@ -111,4 +111,11 @@ public class MainFrame extends JFrame implements Subscriber {
     public ActionManager getActionManager() {
         return actionManager;
     }
+    public String getText(){
+        //jTextArea.getText();
+       return jTextArea.getSelectedText();
+    }
+    public void clear(){
+        jTextArea.setText(null);
+    }
 }
