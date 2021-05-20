@@ -36,7 +36,7 @@ public class AppCore extends PublisherImpl {
         this.validator = new ValidatorImpl();
         this.compiler = new CompilerImpl();
         this.errorHandler = new ErrorHandlerImpl();
-
+        this.errorHandler.addSubsriber(gui);
     }
 
     private Settings initialiseSettings(){

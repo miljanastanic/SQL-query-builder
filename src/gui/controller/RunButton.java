@@ -1,7 +1,10 @@
 package gui.controller;
 
 import app.AppCore;
+import errorHandler.Type;
 import gui.table.MainFrame;
+import observer.Notification;
+import observer.NotificationCode;
 import validator.Validator;
 
 import javax.swing.*;
@@ -20,12 +23,18 @@ public class RunButton extends AbstractActionManager{
     @Override
     public void actionPerformed(ActionEvent e) {
         String s = MainFrame.getInstance().getText();
-        System.out.println(s);
-        //s = null;
-        //MainFrame.getInstance().getAppCore().getValidator();
-        if(MainFrame.getInstance().getAppCore().getValidator().valid(s)){
-             MainFrame.getInstance().getAppCore().getCompiler().compile(s);
-           }//else //errorhandler.setmsg
-        s = null;
+
+        if(s!=null) {
+            if (MainFrame.getInstance().getAppCore().getValidator().valid(s)) {
+                MainFrame.getInstance().getAppCore().getCompiler().compile(s);
+            } else {
+                MainFrame.getInstance().getAppCore().getErrorHandler().generateError(Type.CANNOT_COMPILE);
+
+            }
+            s = null;
+        }else{
+            System.out.println("aaa");
+            MainFrame.getInstance().getAppCore().getErrorHandler().generateError(Type.CANNOT_COMPILE);
+        }
     }
 }

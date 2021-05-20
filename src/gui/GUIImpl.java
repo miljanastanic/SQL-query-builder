@@ -1,5 +1,6 @@
 package gui;
 
+import errorHandler.Error;
 import gui.table.GUI;
 import gui.table.MainFrame;
 import gui.table.TableModel;
@@ -22,7 +23,12 @@ public class GUIImpl implements GUI {
 
     @Override
     public void update(Notification notification) {
-
+        System.out.println("update");
+        Object error = notification.getData();
+        Error error1 = (Error) error;
+        if (error1 instanceof Error) {
+            MainFrame.getInstance().showError(error1);
+        }
     }
 
     public TableModel getTableModel() {

@@ -1,5 +1,6 @@
 package errorHandler;
 
+import gui.table.MainFrame;
 import observer.Notification;
 import observer.NotificationCode;
 import observer.Subscriber;

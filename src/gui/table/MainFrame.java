@@ -1,6 +1,7 @@
 package gui.table;
 
 import app.AppCore;
+import errorHandler.Error;
 import gui.controller.ActionManager;
 import gui.controller.RunButton;
 import javafx.scene.control.ToolBar;
@@ -117,5 +118,10 @@ public class MainFrame extends JFrame implements Subscriber {
     }
     public void clear(){
         jTextArea.setText(null);
+    }
+
+    public void showError(Error notification){
+        System.out.println("aaa");
+        JOptionPane.showMessageDialog(this, notification.getMessage(), notification.getTitle(), JOptionPane.WARNING_MESSAGE);
     }
 }
