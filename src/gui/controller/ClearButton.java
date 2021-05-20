@@ -10,7 +10,7 @@ public class ClearButton extends AbstractActionManager{
 
     public ClearButton() {
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
-        //putValue(SMALL_ICON, loadIcon(""));
+        putValue(SMALL_ICON, loadIcon("pic/cleaar.png"));
         putValue(NAME, "Clear");
         putValue(SHORT_DESCRIPTION, "Clear text");
     }

@@ -12,7 +12,7 @@ public class Main {
         mainFrame.getAppCore().readDataFromTable("EMPLOYEES");
         mainFrame.getAppCore().loadResource();
 
-
+/*
         try {
             Thread.sleep(6000);
         } catch (InterruptedException e) {
@@ -21,5 +21,8 @@ public class Main {
 
         mainFrame.getAppCore().readDataFromTable("JOBS");
 
+
+ */
     }
+
 }
