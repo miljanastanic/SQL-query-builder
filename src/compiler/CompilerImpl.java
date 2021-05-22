@@ -28,6 +28,7 @@ public class CompilerImpl implements Compiler{
         System.out.println(newQuery);
     }
 
+    @Override
     public void devide(String input){
         String[] probica1;
         String[] probica2;
@@ -39,6 +40,7 @@ public class CompilerImpl implements Compiler{
         query.queryDivide();
     }
 
+    @Override
     public String makeSQLQuery(){
         parts = query.getAllPartsOfQuery();
         String funName;
