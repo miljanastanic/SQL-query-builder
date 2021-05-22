@@ -46,7 +46,7 @@ public class MainFrame extends JFrame implements Subscriber {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension screenSize = toolkit.getScreenSize();
         int screenHeight = 600;
-        int screenWidth = 700;
+        int screenWidth = 1100;
         setSize(screenWidth, screenHeight);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -59,7 +59,7 @@ public class MainFrame extends JFrame implements Subscriber {
 
         jTable = new JTable();
         jTable.setBackground(Color.WHITE);
-        jTable.setPreferredScrollableViewportSize(new Dimension(700,500));
+        jTable.setPreferredScrollableViewportSize(new Dimension(1100,500));
         jTable.setFillsViewportHeight(true);
 
         jScrollPane = new JScrollPane(jTable);
