@@ -19,6 +19,10 @@ public class Query {
         return functionName;
     }
 
+    public void setFunctionName(String functionName) {
+        this.functionName = functionName;
+    }
+
     public String[] getArguments() {
         return arguments;
     }

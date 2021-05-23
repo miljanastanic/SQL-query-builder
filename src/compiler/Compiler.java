@@ -3,6 +3,6 @@ package compiler;
 public interface Compiler {
 
     void compile(String query);
-    public void devide(String input);
-    public String makeSQLQuery();
+    void devide(String input);
+    String makeSQLQuery();
 }

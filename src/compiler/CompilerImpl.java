@@ -46,9 +46,24 @@ public class CompilerImpl implements Compiler{
         String funName;
         String out = "";
         for (Query part: parts) {
+
            funName = part.getFunctionName();
-           out +=  funName.toLowerCase() + " " + part.toString();
-            //out +=  funName.toLowerCase() + " " + Arrays.toString(part.getArguments()) + " ";
+
+           if(funName.equalsIgnoreCase("query")){
+               System.out.println("ovo radi 1");
+               part.setFunctionName("SELECT");
+               funName = part.getFunctionName();
+               System.out.println(funName);
+
+               if (part.getArguments().length == 0){
+                   out += "SELECT * FROM";
+               }
+               else{
+                   //out += funName.toUpperCase() + part.toString() + "FROM";
+               }
+           }
+           //out +=  funName.toLowerCase() + " " + part.toString();
+            out +=  funName.toLowerCase() + " " + Arrays.toString(part.getArguments()) + " ";
         }
         query.removeAllPartsOfQuery();
         return out;
