@@ -51,20 +51,34 @@ public class CompilerImpl implements Compiler{
 
            if(funName.equalsIgnoreCase("query")){
                System.out.println("ovo radi 1");
-               part.setFunctionName("SELECT");
-               funName = part.getFunctionName();
-               System.out.println(funName);
-
-               if (part.getArguments().length == 0){
-                   out += "SELECT * FROM";
-               }
-               else{
-                   //out += funName.toUpperCase() + part.toString() + "FROM";
-               }
+               part.setFunctionName("FROM");
+               out +=  part.getFunctionName() + " " + part.toString();
+               //funName = part.getFunctionName();
+               //System.out.println(funName);
            }
-           //out +=  funName.toLowerCase() + " " + part.toString();
-            out +=  funName.toLowerCase() + " " + Arrays.toString(part.getArguments()) + " ";
+           if(funName.equalsIgnoreCase("select")){
+                if(part.getArguments().length == 0){
+                    part.setFunctionName("SELECT *");
+                }else{
+                    part.setFunctionName("SELECT");
+                }
+                out +=  part.getFunctionName() + " " + part.toString();
+           }
+           if(funName.equalsIgnoreCase("orderby")){
+                part.setFunctionName("ORDER BY");
+                out +=  part.getFunctionName() + " " + part.toString();
+           }
+           if(funName.equalsIgnoreCase("orderbydesc")){
+                part.setFunctionName("ORDER BY");
+                out +=  part.getFunctionName() + " " + part.toString() + "DESC" + " ";
+           }
+           if(funName.equalsIgnoreCase("where")){
+               out +=  part.getFunctionName() + " " + part.toString();
+           }
+           //out +=  part.getFunctionName() + " " + part.toString();
+           //out +=  funName.toLowerCase() + " " + Arrays.toString(part.getArguments()) + " ";
         }
+
         query.removeAllPartsOfQuery();
         return out;
     }

@@ -59,4 +59,8 @@ public class Query {
     public static void removeAllPartsOfQuery() {
         allPartsOfQuery.clear();
     }
+
+    public void setArguments(String argument) {
+        this.arguments[arguments.length] = argument;
+    }
 }
