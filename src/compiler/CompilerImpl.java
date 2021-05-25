@@ -47,61 +47,61 @@ public class CompilerImpl implements Compiler{
         String out = "";
         for (Query part: parts) {
 
-           funName = part.getFunctionName();
+            funName = part.getFunctionName();
 
-           //1.Upit nad tabelom
-           if(funName.equalsIgnoreCase("query")){
-               System.out.println("ovo radi 1");
-               part.setFunctionName("FROM");
-               out +=  part.getFunctionName() + " " + part.toString() + ".";
-           }
-           //2.Projekcija
-           if(funName.equalsIgnoreCase("select")){
+            //1.Upit nad tabelom
+            if(funName.equalsIgnoreCase("query")){
+                System.out.println("ovo radi 1");
+                part.setFunctionName("FROM");
+                out +=  part.getFunctionName() + " " + part.toString() + ".";
+            }
+            //2.Projekcija
+            if(funName.equalsIgnoreCase("select")){
                 if(part.getArguments().length == 0){
                     part.setFunctionName("SELECT *");
                 }else{
                     part.setFunctionName("SELECT");
                 }
                 out +=  part.getFunctionName() + " " + part.toString() + ".";
-           }
-           //3.Sortiranje
-           if(funName.equalsIgnoreCase("orderby")){
+            }
+            //3.Sortiranje
+            if(funName.equalsIgnoreCase("orderby")){
                 part.setFunctionName("ORDER BY");
                 out +=  part.getFunctionName() + " " + part.toString() + ".";
-           }
-           if(funName.equalsIgnoreCase("orderbydesc")){
+            }
+            if(funName.equalsIgnoreCase("orderbydesc")){
                 part.setFunctionName("ORDER BY");
                 out +=  part.getFunctionName() + " " + part.toString() + "DESC" + ".";
-           }
-           //4.Filtriranje
-           if(funName.equalsIgnoreCase("where")){
-               out +=  part.getFunctionName() + " " + part.toString() + ".";
-           }
-           if(funName.equalsIgnoreCase("orwhere")){
-               part.setFunctionName("WHERE");
-               part.setFunctionName("WHERE");
-               out +=  part.getFunctionName() + " " + part.getArguments()[0] + " " + "OR" + " "+ part.getArguments()[1] + " " + part.getArguments()[2]+ ".";
-           }
-           if(funName.equalsIgnoreCase("andwhere")){
-               part.setFunctionName("WHERE");
-               out +=  part.getFunctionName() + " " + part.getArguments()[0] + " " + "AND" + " " + part.getArguments()[1] + " " + part.getArguments()[2]+ ".";
-           }
-           if(funName.equalsIgnoreCase("wherebetween")){
-               part.setFunctionName("WHERE");
-               out +=  part.getFunctionName() + " " + part.getArguments()[0] + " "  + "BETWEEN" + " "  + part.getArguments()[1]+ " " + "AND" + " " + part.getArguments()[2] + ".";
-           }
-           if(funName.equalsIgnoreCase("wherein")){
-               part.setFunctionName("WHERE");
-               out +=  part.getFunctionName() + " "+ part.getArguments()[0] + " " +"IN"+ " " + "(";
-               for(int j=1; j < part.getArguments().length; j++){
-                   out+=part.getArguments()[j];
-                   if(!(j == (part.getArguments().length)-1)){
-                       out+=",";
-                   }
-               }
-               out+=")" + ".";
-           }
-           //6.Stringovne operacije (where department_name like 'S%')
+            }
+            //4.Filtriranje
+            if(funName.equalsIgnoreCase("where")){
+                out +=  part.getFunctionName() + " " + part.toString() + ".";
+            }
+            if(funName.equalsIgnoreCase("orwhere")){
+                part.setFunctionName("WHERE");
+                part.setFunctionName("WHERE");
+                out +=  part.getFunctionName() + " " + part.getArguments()[0] + " " + "OR" + " "+ part.getArguments()[1] + " " + part.getArguments()[2]+ ".";
+            }
+            if(funName.equalsIgnoreCase("andwhere")){
+                part.setFunctionName("WHERE");
+                out +=  part.getFunctionName() + " " + part.getArguments()[0] + " " + "AND" + " " + part.getArguments()[1] + " " + part.getArguments()[2]+ ".";
+            }
+            if(funName.equalsIgnoreCase("wherebetween")){
+                part.setFunctionName("WHERE");
+                out +=  part.getFunctionName() + " " + part.getArguments()[0] + " "  + "BETWEEN" + " "  + part.getArguments()[1]+ " " + "AND" + " " + part.getArguments()[2] + ".";
+            }
+            if(funName.equalsIgnoreCase("wherein")){
+                part.setFunctionName("WHERE");
+                out +=  part.getFunctionName() + " "+ part.getArguments()[0] + " " +"IN"+ " " + "(";
+                for(int j=1; j < part.getArguments().length; j++){
+                    out+=part.getArguments()[j];
+                    if(!(j == (part.getArguments().length)-1)){
+                        out+=",";
+                    }
+                }
+                out+=")" + ".";
+            }
+            //6.Stringovne operacije (where department_name like 'S%')
             if(funName.equalsIgnoreCase("whereendswith")) {
                 part.setFunctionName("WHERE");
                 out += part.getFunctionName() + " " + part.getArguments()[0] + " " + "like" + " " + "'" + "%" + part.getArguments()[1] + "'" + ".";
