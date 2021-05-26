@@ -59,10 +59,19 @@ public class CompilerImpl implements Compiler{
             if(funName.equalsIgnoreCase("select")){
                 if(part.getArguments().length == 0){
                     part.setFunctionName("SELECT *");
+                    out+=funName + ".";
                 }else{
                     part.setFunctionName("SELECT");
+                    out += part.getFunctionName() + " ";
+                    for(int i=0; i<part.getArguments().length; i++){
+                        out+=part.getArguments()[i];
+                        if(!(i == (part.getArguments().length)-1)){
+                            out+=",";
+                        }
+                    }
+                    out+=".";
                 }
-                out +=  part.getFunctionName() + " " + part.toString() + ".";
+
             }
             //3.Sortiranje
             if(funName.equalsIgnoreCase("orderby")){
@@ -75,10 +84,10 @@ public class CompilerImpl implements Compiler{
             }
             //4.Filtriranje
             if(funName.equalsIgnoreCase("where")){
+                part.setFunctionName("WHERE");
                 out +=  part.getFunctionName() + " " + part.toString() + ".";
             }
             if(funName.equalsIgnoreCase("orwhere")){
-                part.setFunctionName("WHERE");
                 part.setFunctionName("WHERE");
                 out +=  part.getFunctionName() + " " + part.getArguments()[0] + " " + "OR" + " "+ part.getArguments()[1] + " " + part.getArguments()[2]+ ".";
             }
@@ -96,10 +105,27 @@ public class CompilerImpl implements Compiler{
                 for(int j=1; j < part.getArguments().length; j++){
                     out+=part.getArguments()[j];
                     if(!(j == (part.getArguments().length)-1)){
-                        out+=",";
+                        out+=" " + ",";
                     }
                 }
                 out+=")" + ".";
+            }
+            //5.Spajanje tabela
+            if(funName.equalsIgnoreCase("join")){
+                part.setFunctionName("JOIN");
+                out+= part.getFunctionName() + " " + part.getArguments()[0] + ".";
+            }
+            if(funName.equalsIgnoreCase("on")){
+                part.setFunctionName("USING");
+                out+= part.getFunctionName() + " ";
+
+                String column_name1 = part.getArguments()[0].split("[.]")[1];
+                String column_name2 = part.getArguments()[2].split("[.]")[1];
+                String operator = part.getArguments()[1];
+
+                if(operator.equals("=") && column_name1.equals(column_name2)){
+                    out+= "(" + column_name1 + ")" + ".";
+                }
             }
             //6.Stringovne operacije (where department_name like 'S%')
             if(funName.equalsIgnoreCase("whereendswith")) {
@@ -117,19 +143,19 @@ public class CompilerImpl implements Compiler{
             //7.Funkcije agregacije
             if(funName.equalsIgnoreCase("avg")){
                 part.setFunctionName("avg");
-                out += part.getFunctionName() + "(" + part.getArguments() + ")" + ".";
+                out += part.getFunctionName() + "(" + part.getArguments()[0] + ")" + ".";
             }
             if(funName.equalsIgnoreCase("count")){
                 part.setFunctionName("count");
-                out += part.getFunctionName() + "(" + part.getArguments() + ")" + ".";
+                out += part.getFunctionName() + "(" + part.getArguments()[0] + ")" + ".";
             }
             if(funName.equalsIgnoreCase("min")){
                 part.setFunctionName("min");
-                out += part.getFunctionName() + "(" + part.getArguments() + ")" + ".";
+                out += part.getFunctionName() + "(" + part.getArguments()[0] + ")" + ".";
             }
             if(funName.equalsIgnoreCase("max")){
                 part.setFunctionName("max");
-                out += part.getFunctionName() + "(" + part.getArguments() + ")" + ".";
+                out += part.getFunctionName() + "(" + part.getArguments()[0] + ")" + ".";
             }
             if(funName.equalsIgnoreCase("groupby")){
                 part.setFunctionName("GROUP BY");
@@ -154,13 +180,19 @@ public class CompilerImpl implements Compiler{
                 part.setFunctionName("HAVING");
                 out +=  part.getFunctionName() + " " + part.getArguments()[0] + " " + "OR" + " " + part.getArguments()[1] + " " + part.getArguments()[2]+ ".";
             }
-            //OSTALI SU 8.PODUPITI i 5.
+            //OSTALI SU 8.PODUPITI.
             //out +=  part.getFunctionName() + " " + part.toString();
             //out +=  funName.toLowerCase() + " " + Arrays.toString(part.getArguments()) + " ";
         }
-
         query.removeAllPartsOfQuery();
+        sortFuntions(out);
         return out;
+    }
+    public void sortFuntions(String s){
+        String[] help = s.split("[.]");
+        int size = help.length;
+        System.out.println(size);
+
     }
 
 }
