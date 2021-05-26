@@ -14,16 +14,19 @@ public class ValidatorImpl implements Validator {
         pravila.add(new Rule("Pravilo1","aa") {
             @Override
             public boolean check() {
-                ime = MainFrame.getInstance().getText();
+                ime = s;
                 System.out.println(ime);
-                if(ime.contains("Join") && ime.contains("On")){
-                    return true;
+                if(ime.contains("Join")){
+                    if(ime.contains("On")) {
+                        return true;
+                    }else{
+                        return false;
+                    }
                 }
-                else {
-                    return false;
-                }
+                return true;
             }
         });
+
         for (Rule pravilo:pravila) {
             if(!pravilo.check())
                 return false;
