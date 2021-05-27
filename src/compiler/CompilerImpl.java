@@ -92,16 +92,16 @@ public class CompilerImpl implements Compiler{
                 out +=  part.getFunctionName() + " " + part.toString() + ".";
             }
             if(funName.equalsIgnoreCase("orwhere")){
-                part.setFunctionName("5WHERE");
-                out +=  part.getFunctionName() + " " + part.getArguments()[0] + " " + "OR" + " "+ part.getArguments()[1] + " " + part.getArguments()[2]+ ".";
+                part.setFunctionName("5OR");
+                out +=  part.getFunctionName() + " " + part.getArguments()[0] + " " + part.getArguments()[1] + " " + part.getArguments()[2]+ ".";
             }
             if(funName.equalsIgnoreCase("andwhere")){
-                part.setFunctionName("5WHERE");
-                out +=  part.getFunctionName() + " " + part.getArguments()[0] + " " + "AND" + " " + part.getArguments()[1] + " " + part.getArguments()[2]+ ".";
+                part.setFunctionName("5AND");
+                out +=  part.getFunctionName() + " " + part.getArguments()[0] + " " + part.getArguments()[1] + " " + part.getArguments()[2]+ ".";
             }
             if(funName.equalsIgnoreCase("wherebetween")){
-                part.setFunctionName("5WHERE");
-                out +=  part.getFunctionName() + " " + part.getArguments()[0] + " "  + "BETWEEN" + " "  + part.getArguments()[1]+ " " + "AND" + " " + part.getArguments()[2] + ".";
+                part.setFunctionName("5BETWEEN");
+                out +=  part.getFunctionName() + " " + part.getArguments()[0] +  " "  + part.getArguments()[1]+ " " + "AND" + " " + part.getArguments()[2] + ".";
             }
             if(funName.equalsIgnoreCase("wherein")){
                 part.setFunctionName("5WHERE");
