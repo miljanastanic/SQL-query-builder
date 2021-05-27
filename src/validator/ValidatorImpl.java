@@ -26,6 +26,14 @@ public class ValidatorImpl implements Validator {
                 return true;
             }
         });
+//        pravila.add(new Rule("Pravilo2","a") {
+//            @Override
+//            public boolean check() {
+//                ime=s;
+//
+//                return false;
+//            }
+//        });
 
         for (Rule pravilo:pravila) {
             if(!pravilo.check())

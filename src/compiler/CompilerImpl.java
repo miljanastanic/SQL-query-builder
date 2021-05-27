@@ -2,12 +2,16 @@ package compiler;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class CompilerImpl implements Compiler{
 
     private Query query;
+    private String sqlupit = "";
     private List<Query> parts;
+    private List<String> a = new ArrayList<>();
+    private List<String> baka = new ArrayList<>();
 
     @Override
     public void compile(String s) {
@@ -25,7 +29,7 @@ public class CompilerImpl implements Compiler{
             devide(functions[i]);
         }
         newQuery = makeSQLQuery();
-        System.out.println(newQuery);
+        //System.out.println(newQuery);
     }
 
     @Override
@@ -52,16 +56,16 @@ public class CompilerImpl implements Compiler{
             //1.Upit nad tabelom
             if(funName.equalsIgnoreCase("query")){
                 System.out.println("ovo radi 1");
-                part.setFunctionName("FROM");
+                part.setFunctionName("2FROM");
                 out +=  part.getFunctionName() + " " + part.toString() + ".";
             }
             //2.Projekcija
             if(funName.equalsIgnoreCase("select")){
                 if(part.getArguments().length == 0){
-                    part.setFunctionName("SELECT *");
+                    part.setFunctionName("1SELECT *");
                     out+=funName + ".";
                 }else{
-                    part.setFunctionName("SELECT");
+                    part.setFunctionName("1SELECT");
                     out += part.getFunctionName() + " ";
                     for(int i=0; i<part.getArguments().length; i++){
                         out+=part.getArguments()[i];
@@ -75,32 +79,32 @@ public class CompilerImpl implements Compiler{
             }
             //3.Sortiranje
             if(funName.equalsIgnoreCase("orderby")){
-                part.setFunctionName("ORDER BY");
+                part.setFunctionName("8ORDER BY");
                 out +=  part.getFunctionName() + " " + part.toString() + ".";
             }
             if(funName.equalsIgnoreCase("orderbydesc")){
-                part.setFunctionName("ORDER BY");
+                part.setFunctionName("8ORDER BY");
                 out +=  part.getFunctionName() + " " + part.toString() + "DESC" + ".";
             }
             //4.Filtriranje
             if(funName.equalsIgnoreCase("where")){
-                part.setFunctionName("WHERE");
+                part.setFunctionName("5WHERE");
                 out +=  part.getFunctionName() + " " + part.toString() + ".";
             }
             if(funName.equalsIgnoreCase("orwhere")){
-                part.setFunctionName("WHERE");
+                part.setFunctionName("5WHERE");
                 out +=  part.getFunctionName() + " " + part.getArguments()[0] + " " + "OR" + " "+ part.getArguments()[1] + " " + part.getArguments()[2]+ ".";
             }
             if(funName.equalsIgnoreCase("andwhere")){
-                part.setFunctionName("WHERE");
+                part.setFunctionName("5WHERE");
                 out +=  part.getFunctionName() + " " + part.getArguments()[0] + " " + "AND" + " " + part.getArguments()[1] + " " + part.getArguments()[2]+ ".";
             }
             if(funName.equalsIgnoreCase("wherebetween")){
-                part.setFunctionName("WHERE");
+                part.setFunctionName("5WHERE");
                 out +=  part.getFunctionName() + " " + part.getArguments()[0] + " "  + "BETWEEN" + " "  + part.getArguments()[1]+ " " + "AND" + " " + part.getArguments()[2] + ".";
             }
             if(funName.equalsIgnoreCase("wherein")){
-                part.setFunctionName("WHERE");
+                part.setFunctionName("5WHERE");
                 out +=  part.getFunctionName() + " "+ part.getArguments()[0] + " " +"IN"+ " " + "(";
                 for(int j=1; j < part.getArguments().length; j++){
                     out+=part.getArguments()[j];
@@ -112,11 +116,11 @@ public class CompilerImpl implements Compiler{
             }
             //5.Spajanje tabela
             if(funName.equalsIgnoreCase("join")){
-                part.setFunctionName("JOIN");
+                part.setFunctionName("3JOIN");
                 out+= part.getFunctionName() + " " + part.getArguments()[0] + ".";
             }
             if(funName.equalsIgnoreCase("on")){
-                part.setFunctionName("USING");
+                part.setFunctionName("4USING");
                 out+= part.getFunctionName() + " ";
 
                 String column_name1 = part.getArguments()[0].split("[.]")[1];
@@ -129,15 +133,15 @@ public class CompilerImpl implements Compiler{
             }
             //6.Stringovne operacije (where department_name like 'S%')
             if(funName.equalsIgnoreCase("whereendswith")) {
-                part.setFunctionName("WHERE");
+                part.setFunctionName("5WHERE");
                 out += part.getFunctionName() + " " + part.getArguments()[0] + " " + "like" + " " + "'" + "%" + part.getArguments()[1] + "'" + ".";
             }
             if(funName.equalsIgnoreCase("wherestartswith")) {
-                part.setFunctionName("WHERE");
+                part.setFunctionName("5WHERE");
                 out += part.getFunctionName() + " " + part.getArguments()[0] + " " + "like" + " " + "'" + part.getArguments()[1] + "%" + "'" + ".";
             }
             if(funName.equalsIgnoreCase("wherecontains")) {
-                part.setFunctionName("WHERE");
+                part.setFunctionName("5WHERE");
                 out += part.getFunctionName() + " " + part.getArguments()[0] + " " + "like" + " " + "'"+ "%" + part.getArguments()[1] + "%" + "'" + ".";
             }
             //7.Funkcije agregacije
@@ -158,26 +162,27 @@ public class CompilerImpl implements Compiler{
                 out += part.getFunctionName() + "(" + part.getArguments()[0] + ")" + ".";
             }
             if(funName.equalsIgnoreCase("groupby")){
-                part.setFunctionName("GROUP BY");
+                part.setFunctionName("6GROUP BY");
                 out += part.getFunctionName() + " ";
-                for(int j=1; j < part.getArguments().length; j++){
+                for(int j=0; j < part.getArguments().length; j++){
                     out+=part.getArguments()[j];
                     if(!(j == (part.getArguments().length)-1)){
                         out+= " " + ",";
                     }
-                    out+=".";
+
                 }
+                out+=".";
             }
             if(funName.equalsIgnoreCase("having")){
-                part.setFunctionName("HAVING");
+                part.setFunctionName("7HAVING");
                 out +=  part.getFunctionName() + " " + part.getArguments()[0] + " " + part.getArguments()[1]+ " " + part.getArguments()[2] + ".";
             }
             if(funName.equalsIgnoreCase("andhaving")){
-                part.setFunctionName("HAVING");
+                part.setFunctionName("7HAVING");
                 out +=  part.getFunctionName() + " " + part.getArguments()[0] + " " + "AND" + " " + part.getArguments()[1] + " " + part.getArguments()[2]+ ".";
             }
             if(funName.equalsIgnoreCase("orhaving")){
-                part.setFunctionName("HAVING");
+                part.setFunctionName("7HAVING");
                 out +=  part.getFunctionName() + " " + part.getArguments()[0] + " " + "OR" + " " + part.getArguments()[1] + " " + part.getArguments()[2]+ ".";
             }
             //OSTALI SU 8.PODUPITI.
@@ -191,7 +196,55 @@ public class CompilerImpl implements Compiler{
     public void sortFuntions(String s){
         String[] help = s.split("[.]");
         int size = help.length;
-        System.out.println(size);
+        for (int i = 0; i < size ; i++){
+            a.add(help[i]);
+        }
+        Collections.sort(a);
+        for (String g: a) {
+            if(g.startsWith("1") ){
+                String temp;
+                temp = g.replace("1","");
+                baka.add(temp);
+            }
+            else if(g.startsWith("2") ){
+                String temp;
+                temp = g.replace("2","");
+                baka.add(temp);
+            }
+            else if(g.startsWith("3") ){
+                String temp;
+                temp = g.replace("3","");
+                baka.add(temp);
+            }
+            else if(g.startsWith("4") ){
+                String temp;
+                temp = g.replace("4","");
+                baka.add(temp);
+            }
+           else if(g.startsWith("5") ){
+                String temp;
+                temp = g.replace("5","");
+                baka.add(temp);
+            }
+          else  if(g.startsWith("6") ){
+                String temp;
+                temp = g.replace("6","");
+                baka.add(temp);
+            }
+           else if(g.startsWith("7") ){
+                String temp;
+                temp = g.replace("7","");
+                baka.add(temp);
+            }else
+                baka.add(g);
+        }
+        System.out.println(a);
+        System.out.println(baka);
+        for (String s1: baka) {
+            sqlupit += s1 + " ";
+        }
+
+        System.out.println(sqlupit);
 
     }
 
