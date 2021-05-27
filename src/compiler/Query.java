@@ -1,16 +1,17 @@
 package compiler;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class Query {
+public class Query implements Comparable{
 
     private String functionName;
+    private int priority;
     private String[] arguments;
     private static List<Query> allPartsOfQuery = new ArrayList<>();
 
-    public Query(String functionName, String[] arguments) {
+    public Query(String functionName, String[] arguments, int priority) {
+        this.priority = priority;
         this.functionName = functionName;
         this.arguments = arguments;
     }
@@ -27,7 +28,7 @@ public class Query {
         return arguments;
     }
 
-    public void queryDivide(){
+    public void queryDivide() {
         int size = arguments.length;
 
         for (int i=0; i< arguments.length; i++){
@@ -62,5 +63,14 @@ public class Query {
 
     public void setArguments(String argument) {
         this.arguments[arguments.length] = argument;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if(o instanceof Query) {
+            Query q = (Query) o;
+            return Integer.compare(this.priority, q.priority);
+        }
+        return 0;
     }
 }

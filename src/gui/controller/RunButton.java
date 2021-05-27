@@ -25,16 +25,16 @@ public class RunButton extends AbstractActionManager{
         String s = MainFrame.getInstance().getText();
 
         if(s!=null) {
-            if (MainFrame.getInstance().getAppCore().getValidator().valid(s)) {
-                MainFrame.getInstance().getAppCore().getCompiler().compile(s);
+            if (AppCore.getInstance().getValidator().valid(s)) {
+                AppCore.getInstance().getCompiler().compile(s);
             } else {
-                MainFrame.getInstance().getAppCore().getErrorHandler().generateError(Type.CANNOT_COMPILE);
+                AppCore.getInstance().getErrorHandler().generateError(Type.CANNOT_COMPILE);
 
             }
             s = null;
         }else{
             System.out.println("aaa");
-            MainFrame.getInstance().getAppCore().getErrorHandler().generateError(Type.CANNOT_COMPILE);
+            AppCore.getInstance().getErrorHandler().generateError(Type.CANNOT_COMPILE);
         }
     }
 }

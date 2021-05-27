@@ -18,6 +18,7 @@ public class GUIImpl implements GUI {
     @Override
     public void start() {
         instance = MainFrame.getInstance();
+        instance.getjTable().setModel(tableModel);
         instance.setVisible(true);
     }
 

@@ -20,26 +20,38 @@ import utils.Constants;
 import validator.Validator;
 import validator.ValidatorImpl;
 
-public class AppCore extends PublisherImpl {
+public class AppCore extends AppFramework {
 
-    private Database database;
-    private Settings settings;
-    private GUI gui;
-    private Compiler compiler;
-    private Validator validator;
-    private ErrorHandler errorHandler;
+    private static AppCore instance;
 
-    public AppCore() {
-        this.settings = initialiseSettings();
-        this.database = new DatabaseImpl(new MSSQLrepository(this.settings));
-        this.gui = new GUIImpl(new TableModel());
-        this.validator = new ValidatorImpl();
-        this.compiler = new CompilerImpl();
-        this.errorHandler = new ErrorHandlerImpl();
-        this.errorHandler.addSubsriber(gui);
+    private AppCore() {
+
     }
 
-    private Settings initialiseSettings(){
+    public static AppCore getInstance() {
+        if(instance == null){
+            instance = new AppCore();
+        }
+        return instance;
+    }
+
+    public static void main(String[] args) {
+        AppFramework app = AppCore.getInstance();
+        Settings settings = initialiseSettings();
+        Database database = new DatabaseImpl(new MSSQLrepository(settings));
+        GUI gui = new GUIImpl(new TableModel());
+        Validator validator = new ValidatorImpl();
+        Compiler compiler = new CompilerImpl();
+        ErrorHandler errorHandler = new ErrorHandlerImpl();
+        errorHandler.addSubsriber(gui);
+        app.initialise(gui,errorHandler,settings,database,validator,compiler);
+        app.run();
+
+        AppCore.getInstance().readDataFromTable("EMPLOYEES");
+        AppCore.getInstance().loadResource();
+    }
+
+    private static Settings initialiseSettings(){
         Settings settingsImpl = new SettingsImpl();
         settingsImpl.addParameter("mssql_ip", Constants.MSSQL_IP);
         settingsImpl.addParameter("mssql_database", Constants.MSSQL_DATABASE);
@@ -57,9 +69,9 @@ public class AppCore extends PublisherImpl {
         gui.getTableModel().setRows(this.database.readDataFromTable(fromTable));
     }
 
-    public TableModel getTableModel() {
-        return gui.getTableModel();
-    }
+//    public TableModel getTableModel() {
+//        return gui.getTableModel();
+//    }
 
     public Validator getValidator() {
         return validator;
@@ -71,5 +83,11 @@ public class AppCore extends PublisherImpl {
 
     public ErrorHandler getErrorHandler() {
         return errorHandler;
+    }
+
+    @Override
+    public void run() {
+        this.gui.start();
+
     }
 }

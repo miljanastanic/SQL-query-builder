@@ -18,7 +18,6 @@ public class MainFrame extends JFrame implements Subscriber {
 
     private static MainFrame instance = null;
 
-    private AppCore appCore;
     private ActionManager actionManager;
     private TableModel tableModel;
     private JTable jTable;
@@ -62,6 +61,8 @@ public class MainFrame extends JFrame implements Subscriber {
         jTable.setPreferredScrollableViewportSize(new Dimension(1100,500));
         jTable.setFillsViewportHeight(true);
 
+
+
         jScrollPane = new JScrollPane(jTable);
 
         jTextArea = new JTextArea();
@@ -89,12 +90,12 @@ public class MainFrame extends JFrame implements Subscriber {
         this.setVisible(true);
     }
 
-    public void setAppCore(AppCore appCore){
-        this.appCore = appCore;
-        this.appCore.addSubscriber(this);
-        jTable.setModel(appCore.getTableModel()); //PITAJ ANNU
+//   public void setAppCore(AppCore appCore){
+//        this.appCore = appCore;
+//        this.appCore.addSubscriber(this);
+//        jTable.setModel(appCore.getTableModel()); //PITAJ ANNU
 
-    }
+    //}
 
     @Override
     public void update(Notification notification) {
@@ -105,9 +106,10 @@ public class MainFrame extends JFrame implements Subscriber {
         }
     }
 
-    public AppCore getAppCore() {
-        return appCore;
-    }
+//    public void setCore(AppCore appCore){
+//
+//
+//    }
 
     public ActionManager getActionManager() {
         return actionManager;
@@ -118,6 +120,10 @@ public class MainFrame extends JFrame implements Subscriber {
     }
     public void clear(){
         jTextArea.setText(null);
+    }
+
+    public JTable getjTable() {
+        return jTable;
     }
 
     public void showError(Error notification){
