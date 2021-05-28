@@ -16,7 +16,6 @@ public class CompilerImpl implements Compiler{
 
     @Override
     public String makeSQLQuery(String s){
-        System.out.println(s + "kompajer");
         parts = divider.devide1(s);
         Collections.sort(parts);
         String funName;
@@ -141,22 +140,21 @@ public class CompilerImpl implements Compiler{
             }
             if(funName.equalsIgnoreCase("having")){
                 part.setFunctionName("HAVING");
-                out +=  part.getFunctionName() + " " + part.getArguments()[0] + " " + part.getArguments()[1]+ " " + part.getArguments()[2] ;
+                out +=  part.getFunctionName() + " " + part.getArguments()[0] + " " + part.getArguments()[1]+ " " + part.getArguments()[2] + " ";
             }
             if(funName.equalsIgnoreCase("andhaving")){
                 part.setFunctionName("HAVING");
-                out +=  part.getFunctionName() + " " + part.getArguments()[0] + " " + "AND" + " " + part.getArguments()[1] + " " + part.getArguments()[2];
+                out +=  part.getFunctionName() + " " + part.getArguments()[0] + " " + "AND" + " " + part.getArguments()[1] + " " + part.getArguments()[2] + " ";
             }
             if(funName.equalsIgnoreCase("orhaving")){
                 part.setFunctionName("HAVING");
-                out +=  part.getFunctionName() + " " + part.getArguments()[0] + " " + "OR" + " " + part.getArguments()[1] + " " + part.getArguments()[2];
+                out +=  part.getFunctionName() + " " + part.getArguments()[0] + " " + "OR" + " " + part.getArguments()[1] + " " + part.getArguments()[2] + " ";
             }
             //OSTALI SU 8.PODUPITI.
             //out +=  part.getFunctionName() + " " + part.toString();
             //out +=  funName.toLowerCase() + " " + Arrays.toString(part.getArguments()) + " ";
         }
-        //query.removeAllPartsOfQuery();
-        //sortFuntions(out);
+        divider.remove();
         System.out.println(out);
         return out;
     }

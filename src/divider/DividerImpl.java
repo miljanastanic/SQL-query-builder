@@ -24,11 +24,6 @@ public class DividerImpl implements Divider{
             devide2(functions[i]);
         }
         queries = getAll();
-        for (Query q:
-             queries) {
-            System.out.println(q.toString() + "ovo je moj query");
-        }
-
         return queries;
     }
 
@@ -47,6 +42,11 @@ public class DividerImpl implements Divider{
         parts = queryy.getAllPartsOfQuery();
         Collections.sort(parts);
         return parts;
+    }
+
+    @Override
+    public void remove(){
+        queryy.removeAllPartsOfQuery();
     }
 
     public int priorityMethod(String s){
