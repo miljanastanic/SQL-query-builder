@@ -1,5 +1,6 @@
 package gui.table;
 
+
 import observer.Subscriber;
 
 import javax.swing.table.DefaultTableModel;

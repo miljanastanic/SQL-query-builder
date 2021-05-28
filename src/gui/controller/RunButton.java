@@ -13,6 +13,8 @@ import java.awt.event.KeyEvent;
 
 public class RunButton extends AbstractActionManager{
 
+    private String bulitQuery;
+
     public RunButton() {
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
         putValue(SMALL_ICON, loadIcon("pic/run.png"));
@@ -26,7 +28,10 @@ public class RunButton extends AbstractActionManager{
 
         if(s!=null) {
             if (AppCore.getInstance().getValidator().valid(s)) {
-                AppCore.getInstance().getCompiler().makeSQLQuery(s);
+                AppCore.getInstance().setKveri(AppCore.getInstance().getCompiler().makeSQLQuery(s));
+                AppCore.getInstance().readDataFromTable(AppCore.getInstance().getKveri());
+                AppCore.getInstance().loadResource();
+                //AppCore.getInstance().getCompiler().makeSQLQuery(s);
             } else {
                 AppCore.getInstance().getErrorHandler().generateError(Type.CANNOT_COMPILE);
 

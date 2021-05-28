@@ -25,6 +25,7 @@ import validator.ValidatorImpl;
 public class AppCore extends AppFramework {
 
     private static AppCore instance;
+    private String kveri = "SELECT * FROM EMPLOYEES";
 
     private AppCore() {
 
@@ -48,8 +49,8 @@ public class AppCore extends AppFramework {
         errorHandler.addSubsriber(gui);
         app.initialise(gui,errorHandler,settings,database,validator,compiler);
         app.run();
-
-        AppCore.getInstance().readDataFromTable("EMPLOYEES");
+        System.out.println(AppCore.getInstance().getKveri() + "main");
+        AppCore.getInstance().readDataFromTable(AppCore.getInstance().getKveri());
         AppCore.getInstance().loadResource();
     }
 
@@ -88,9 +89,21 @@ public class AppCore extends AppFramework {
     }
 
 
+    public Settings getSettings(){
+        return settings;
+    }
+
     @Override
     public void run() {
         this.gui.start();
 
+    }
+
+    public String getKveri() {
+        return kveri;
+    }
+
+    public void setKveri(String kveri) {
+        this.kveri = kveri;
     }
 }

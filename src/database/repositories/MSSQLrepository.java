@@ -84,7 +84,7 @@ public class MSSQLrepository implements Repository{
         try {
             initialiseConnection();
 
-            String query = "SELECT * FROM " + from;
+            String query = from;
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet rs = preparedStatement.executeQuery();
 
