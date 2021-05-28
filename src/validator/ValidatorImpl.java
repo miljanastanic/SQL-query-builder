@@ -1,5 +1,7 @@
 package validator;
 
+import divider.Divider;
+import divider.Query;
 import gui.table.MainFrame;
 
 import java.util.ArrayList;
@@ -9,8 +11,11 @@ public class ValidatorImpl implements Validator {
 
     private List<Rule> pravila = new ArrayList<>();
     private String ime;
+    private Divider divider;
+    private List<Query> queries;
     @Override
     public boolean valid(String s) {
+        //queries = divider.devide1(s);
         pravila.add(new Rule("Pravilo1","aa") {
             @Override
             public boolean check() {
@@ -29,7 +34,7 @@ public class ValidatorImpl implements Validator {
 //        pravila.add(new Rule("Pravilo2","a") {
 //            @Override
 //            public boolean check() {
-//                ime=s;
+//
 //
 //                return false;
 //            }
@@ -42,4 +47,5 @@ public class ValidatorImpl implements Validator {
         }
         return true;
     }
+
 }

@@ -7,6 +7,8 @@ import database.DatabaseImpl;
 import database.repositories.MSSQLrepository;
 import database.settings.Settings;
 import database.settings.SettingsImpl;
+import divider.Divider;
+import divider.DividerImpl;
 import errorHandler.ErrorHandler;
 import errorHandler.ErrorHandlerImpl;
 import gui.GUIImpl;
@@ -84,6 +86,7 @@ public class AppCore extends AppFramework {
     public ErrorHandler getErrorHandler() {
         return errorHandler;
     }
+
 
     @Override
     public void run() {

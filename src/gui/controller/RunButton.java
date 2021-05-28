@@ -26,7 +26,7 @@ public class RunButton extends AbstractActionManager{
 
         if(s!=null) {
             if (AppCore.getInstance().getValidator().valid(s)) {
-                AppCore.getInstance().getCompiler().compile(s);
+                AppCore.getInstance().getCompiler().makeSQLQuery(s);
             } else {
                 AppCore.getInstance().getErrorHandler().generateError(Type.CANNOT_COMPILE);
 

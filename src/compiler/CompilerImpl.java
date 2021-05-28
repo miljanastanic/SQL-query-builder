@@ -1,5 +1,10 @@
 package compiler;
 
+import app.AppCore;
+import divider.Divider;
+import divider.DividerImpl;
+import divider.Query;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -7,41 +12,12 @@ public class CompilerImpl implements Compiler{
 
     private Query query;
     private List<Query> parts;
+    private Divider divider = new DividerImpl();
 
     @Override
-    public void compile(String s) {
-        System.out.println(s);
-        String query = s;
-        String newQuery;
-        String[] varCheck;
-        String[] functions;
-
-        varCheck = query.split("new ");
-
-        functions = varCheck[varCheck.length-1].split("\\).");
-
-        for(int i=0; i<functions.length; i++){
-            devide(functions[i]);
-        }
-        newQuery = makeSQLQuery();
-        System.out.println(newQuery);
-    }
-
-    @Override
-    public void devide(String input){
-        String[] probica1;
-        String[] probica2;
-
-        probica1 = input.split("\\(");
-        probica2 = probica1[1].split("[,]");
-
-        query = new Query(probica1[0], probica2, priorityMethod(probica1[0]));
-        query.queryDivide();
-    }
-
-    @Override
-    public String makeSQLQuery(){
-        parts = query.getAllPartsOfQuery();
+    public String makeSQLQuery(String s){
+        System.out.println(s + "kompajer");
+        parts = divider.devide1(s);
         Collections.sort(parts);
         String funName;
         String out = "";
@@ -64,23 +40,22 @@ public class CompilerImpl implements Compiler{
             funName = part.getFunctionName();
             //1.Upit nad tabelom
             if(funName.equalsIgnoreCase("query")){
-                System.out.println("ovo radi 1");
                 part.setFunctionName("FROM");
-                out +=  part.getFunctionName() + " " + part.toString();
+                out +=  part.getFunctionName() + " " + part.getArguments()[0] + " ";
             }
             //3.Sortiranje
             if(funName.equalsIgnoreCase("orderby")){
                 part.setFunctionName("ORDER BY");
-                out +=  part.getFunctionName() + " " + part.toString() ;
+                out +=  part.getFunctionName() + " " + part.getArguments()[0] + " ";
             }
             if(funName.equalsIgnoreCase("orderbydesc")){
                 part.setFunctionName("ORDER BY");
-                out +=  part.getFunctionName() + " " + part.toString() + "DESC";
+                out +=  part.getFunctionName() + " " + part.getArguments()[0] + "DESC";
             }
             //4.Filtriranje
             if(funName.equalsIgnoreCase("where")){
                 part.setFunctionName("WHERE");
-                out +=  part.getFunctionName() + " " + part.toString();
+                out +=  part.getFunctionName() + " " + part.getArguments()[0];
             }
             if(funName.equalsIgnoreCase("orwhere")){
                 part.setFunctionName("OR");
@@ -180,35 +155,10 @@ public class CompilerImpl implements Compiler{
             //out +=  part.getFunctionName() + " " + part.toString();
             //out +=  funName.toLowerCase() + " " + Arrays.toString(part.getArguments()) + " ";
         }
-        query.removeAllPartsOfQuery();
+        //query.removeAllPartsOfQuery();
         //sortFuntions(out);
+        System.out.println(out);
         return out;
     }
-    public int priorityMethod(String s){
-        if(s.contains("Select")){
-            return 1;
-        }
-        if(s.contains("Query")){
-            return 2;
-        }
-        if(s.contains("Join")){
-            return 3;
-        }
-        if(s.contains("On")){
-            return 4;
-        }
-        if(s.contains("Where")){
-            return 5;
-        }
-        if(s.contains("GroupBy")){
-            return 6;
-        }
-        if(s.contains("Having")){
-            return 7;
-        }
-        if(s.contains("OrderBy")){
-            return 8;
-        }
-        return 9;
-    }
+
 }

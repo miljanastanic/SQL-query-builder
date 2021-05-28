@@ -1,6 +1,7 @@
-package compiler;
+package divider;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Query implements Comparable{
@@ -41,16 +42,12 @@ public class Query implements Comparable{
             String temp = arguments[size-1];
             arguments[size-1] = temp.replace(")", "");
         }
-        allPartsOfQuery.add(this);
+        allPartsOfQuery.add(new Query(this.functionName, this.arguments, this.priority));
     }
 
     @Override
     public String toString() {
-        String s = "";
-        for(int i=0 ; i<arguments.length; i++){
-            s += arguments[i] + " ";
-        }
-        return s;
+        return  functionName + priority + Arrays.toString(arguments);
     }
 
     public static List<Query> getAllPartsOfQuery() {

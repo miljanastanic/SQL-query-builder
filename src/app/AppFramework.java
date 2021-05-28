@@ -3,6 +3,7 @@ package app;
 import compiler.Compiler;
 import database.Database;
 import database.settings.Settings;
+import divider.Divider;
 import errorHandler.ErrorHandler;
 import gui.table.GUI;
 import gui.table.MainFrame;
