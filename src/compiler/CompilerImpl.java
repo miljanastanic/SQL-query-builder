@@ -45,33 +45,28 @@ public class CompilerImpl implements Compiler{
         Collections.sort(parts);
         String funName;
         String out = "";
+
+        String select =parts.get(0).getFunctionName();
+        if(select.equals("Select")){
+            out += "SELECT" + " ";
+            for(int i=0; i<parts.get(0).getArguments().length; i++){
+                        out+=parts.get(0).getArguments()[i];
+                        if(!(i == (parts.get(0).getArguments().length)-1)){
+                            out+=",";
+                        }
+                    }
+                    out+=" ";
+        }else{
+            out += "SELECT " + "*" + " ";
+        }
         for (Query part: parts) {
 
             funName = part.getFunctionName();
-
             //1.Upit nad tabelom
             if(funName.equalsIgnoreCase("query")){
                 System.out.println("ovo radi 1");
                 part.setFunctionName("FROM");
                 out +=  part.getFunctionName() + " " + part.toString();
-            }
-            //2.Projekcija
-            if(funName.equalsIgnoreCase("select")){
-                if(part.getArguments().length == 0){
-                    part.setFunctionName("SELECT *");
-                    out+=funName ;
-                }else{
-                    part.setFunctionName("SELECT");
-                    out += part.getFunctionName() + " ";
-                    for(int i=0; i<part.getArguments().length; i++){
-                        out+=part.getArguments()[i];
-                        if(!(i == (part.getArguments().length)-1)){
-                            out+=",";
-                        }
-                    }
-                    out+=" ";
-                }
-
             }
             //3.Sortiranje
             if(funName.equalsIgnoreCase("orderby")){
