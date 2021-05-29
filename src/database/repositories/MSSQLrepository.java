@@ -43,37 +43,37 @@ public class MSSQLrepository implements Repository{
 
     @Override
     public DBNode getSchema() {
-        try {
-            this.initialiseConnection();
-
-            DatabaseMetaData metaData = connection.getMetaData();
-            InformationResource ir = new InformationResource("BP_Projekat");
-
-            String tabletype[] = {"TABLE"};
-            ResultSet tables = metaData.getTables(connection.getCatalog(),null,null,tabletype);
-
-            while(tables.next()){
-                String tableName = tables.getString("TABLE_NAME");
-                Entity newTable = new Entity(tableName, ir);
-                ir.addChild(newTable);
-
-                ResultSet columns = metaData.getColumns(connection.getCatalog(),null,tableName,null);
-
-                while (columns.next()){
-                    String columnName = columns.getString("COLUMN_NAME");
-                    String columnType = columns.getString("TYPE_NAME");
-                    int columnSize = Integer.parseInt(columns.getString("COLUMN_SIZE"));
-                    Attribute attribute = new Attribute(columnName,newTable, AttributeType.valueOf(columnType.toUpperCase()),columnSize);
-                    newTable.addChild(attribute);
-                }
-            }
-            return ir;
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        finally {
-            this.closeConnection();
-        }
+        //try {
+//            this.initialiseConnection();
+//
+//            DatabaseMetaData metaData = connection.getMetaData();
+//            InformationResource ir = new InformationResource("BP_Projekat");
+//
+//            String tabletype[] = {"TABLE"};
+//            ResultSet tables = metaData.getTables(connection.getCatalog(),null,null,tabletype);
+//
+//            while(tables.next()){
+//                String tableName = tables.getString("TABLE_NAME");
+//                Entity newTable = new Entity(tableName, ir);
+//                ir.addChild(newTable);
+//
+//                ResultSet columns = metaData.getColumns(connection.getCatalog(),null,tableName,null);
+//
+//                while (columns.next()){
+//                    String columnName = columns.getString("COLUMN_NAME");
+//                    String columnType = columns.getString("TYPE_NAME");
+//                    int columnSize = Integer.parseInt(columns.getString("COLUMN_SIZE"));
+//                    Attribute attribute = new Attribute(columnName,newTable, AttributeType.valueOf(columnType.toUpperCase()),columnSize);
+//                    newTable.addChild(attribute);
+//                }
+//            }
+//            return ir;
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//        finally {
+//            this.closeConnection();
+//        }
         return null;
     }
 
@@ -87,22 +87,25 @@ public class MSSQLrepository implements Repository{
             String query = from;
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet rs = preparedStatement.executeQuery();
+            System.out.println(rs + "resultset");
 
             while (rs.next()){
                 Row row = new Row();
                 row.setName(from);
-
+                System.out.println("aaaa");
                 ResultSetMetaData resultSetMetaData = rs.getMetaData();
-                for(int i = 1; i < resultSetMetaData.getColumnCount(); i++){
+                for(int i = 1; i < resultSetMetaData.getColumnCount()+1; i++){
                     row.addField(resultSetMetaData.getColumnName(i),rs.getString(i));
                 }
                 rows.add(row);
             }
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
         }finally {
             this.closeConnection();
         }
+        System.out.println("******");
+        System.out.println(rows);
         return rows;
     }
 }

@@ -8,9 +8,7 @@ public class Row {
     private String name;
     private Map<String, Object> fields;
 
-    public Row(
-
-    ) {
+    public Row() {
         this.fields = new HashMap<>();
 
     }
@@ -35,5 +33,13 @@ public class Row {
 
     public void setFields(Map<String, Object> fields) {
         this.fields = fields;
+    }
+
+    @Override
+    public String toString() {
+        return "Row{" +
+                "name='" + name + '\'' +
+                ", fields=" + fields +
+                '}';
     }
 }
