@@ -100,7 +100,7 @@ public class MSSQLrepository implements Repository{
                 rows.add(row);
             }
         }catch (Exception e){
-            //e.printStackTrace();
+            e.printStackTrace();
         }finally {
             this.closeConnection();
         }

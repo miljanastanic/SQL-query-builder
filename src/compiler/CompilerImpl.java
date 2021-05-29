@@ -49,7 +49,7 @@ public class CompilerImpl implements Compiler{
             }
             if(funName.equalsIgnoreCase("orderbydesc")){
                 part.setFunctionName("ORDER BY");
-                out +=  part.getFunctionName() + " " + part.getArguments()[0] + "DESC";
+                out +=  part.getFunctionName() + " " + part.getArguments()[0] + " " +"DESC";
             }
             //4.Filtriranje
             if(funName.equalsIgnoreCase("where")){

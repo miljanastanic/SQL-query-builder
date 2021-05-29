@@ -36,10 +36,10 @@ public class RunButton extends AbstractActionManager{
                 AppCore.getInstance().getErrorHandler().generateError(Type.CANNOT_COMPILE);
 
             }
-            s = null;
-        }else{
+           // s = null;
+        }/*else{
             System.out.println("aaa");
             AppCore.getInstance().getErrorHandler().generateError(Type.CANNOT_COMPILE);
-        }
+        }*/
     }
 }
