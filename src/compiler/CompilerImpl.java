@@ -23,29 +23,40 @@ public class CompilerImpl implements Compiler{
             String out = "";
             String alias = "";
             String aliasName = "";
+            String flag = "";
+            String flagName = "";
 
             String select = parts.get(0).getFunctionName();
             if (select.equals("Select")) {
                 for (Query q : parts) {
                     if ((q.getFunctionName().equals("Avg") || q.getFunctionName().equals("Count")) || (q.getFunctionName().equals("Max") || q.getFunctionName().equals("Min"))) {
-                        System.out.println("nasao je avg");
-                        if (q.getArguments().length > 0) {
+                        if (q.getArguments().length == 2) {
                             alias = q.getArguments()[0];
                             aliasName = q.getArguments()[1];
                             System.out.println(alias + aliasName);
+                        }else if(q.getArguments().length == 1){
+                            flag = q.getFunctionName();
+                            flagName = q.getArguments()[0];
                         }
                     }
                 }
                 out += "SELECT" + " ";
                 for (int i = 0; i < parts.get(0).getArguments().length; i++) {
 
-                    if (parts.get(0).getArguments()[i].equalsIgnoreCase(alias)) {
-                        out += parts.get(0).getArguments()[i] + " " + "AS" + " " + aliasName;
-                    } else {
-                        out += parts.get(0).getArguments()[i];
-                    }
-                    if (!(i == (parts.get(0).getArguments().length) - 1)) {
-                        out += ",";
+                    if(!(flag.isEmpty())){
+                        if(parts.get(0).getArguments()[i].equals(flagName)){
+                            out += flag.toLowerCase() + "(" + flagName + ")" + " ";
+                            flag="";
+                        }
+                    }else {
+                        if (parts.get(0).getArguments()[i].equalsIgnoreCase(alias)) {
+                            out += parts.get(0).getArguments()[i] + " " + "AS" + " " + aliasName;
+                        } else {
+                            out += parts.get(0).getArguments()[i];
+                        }
+                        if (!(i == (parts.get(0).getArguments().length) - 1)) {
+                            out += ",";
+                        }
                     }
                 }
                 out += " ";
@@ -142,22 +153,6 @@ public class CompilerImpl implements Compiler{
                     out += part.getFunctionName() + " " + part.getArguments()[0] + " " + "like" + " " + "'" + "%" + n + "%" + "'";
                 }
                 //7.Funkcije agregacije
-                if (funName.equalsIgnoreCase("avg")) {
-                    part.setFunctionName("avg");
-                    out += part.getFunctionName() + "(" + part.getArguments()[0] + ")";
-                }
-                if (funName.equalsIgnoreCase("count")) {
-                    part.setFunctionName("count");
-                    out += part.getFunctionName() + "(" + part.getArguments()[0] + ")";
-                }
-                if (funName.equalsIgnoreCase("min")) {
-                    part.setFunctionName("min");
-                    out += part.getFunctionName() + "(" + part.getArguments()[0] + ")";
-                }
-                if (funName.equalsIgnoreCase("max")) {
-                    part.setFunctionName("max");
-                    out += part.getFunctionName() + "(" + part.getArguments()[0] + ")";
-                }
                 if (funName.equalsIgnoreCase("groupby")) {
                     part.setFunctionName("GROUP BY");
                     out += part.getFunctionName() + " ";
