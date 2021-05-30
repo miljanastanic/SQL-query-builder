@@ -30,7 +30,7 @@ public class RunButton extends AbstractActionManager{
             if (AppCore.getInstance().getValidator().valid(s)) {
                 AppCore.getInstance().setKveri(AppCore.getInstance().getCompiler().makeSQLQuery(s));
                 AppCore.getInstance().readDataFromTable(AppCore.getInstance().getKveri());
-                AppCore.getInstance().loadResource();
+                //AppCore.getInstance().loadResource();
                 //AppCore.getInstance().getCompiler().makeSQLQuery(s);
             } else {
                 AppCore.getInstance().getErrorHandler().generateError(Type.CANNOT_COMPILE);

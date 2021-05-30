@@ -11,6 +11,7 @@ public class Row {
     public Row() {
         this.fields = new HashMap<>();
 
+
     }
     public void addField(String fieldName, Object value){
         this.fields.put(fieldName, value);
@@ -34,6 +35,7 @@ public class Row {
     public void setFields(Map<String, Object> fields) {
         this.fields = fields;
     }
+
 
     @Override
     public String toString() {

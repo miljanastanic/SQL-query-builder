@@ -11,6 +11,7 @@ import resource.implementation.InformationResource;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MSSQLrepository implements Repository{
@@ -92,10 +93,33 @@ public class MSSQLrepository implements Repository{
             while (rs.next()){
                 Row row = new Row();
                 row.setName(from);
-                System.out.println("aaaa");
+                //System.out.println("aaaa");
                 ResultSetMetaData resultSetMetaData = rs.getMetaData();
+//
                 for(int i = 1; i < resultSetMetaData.getColumnCount()+1; i++){
-                    row.addField(resultSetMetaData.getColumnName(i),rs.getString(i));
+//                    for (Object o: row.getFields().values()) {
+//                        if (o instanceof String){
+//                            row.addField(resultSetMetaData.getColumnName(i),rs.getString(i));
+//                        }else if(o instanceof Integer){
+//                            row.addField(resultSetMetaData.getColumnName(i),rs.getInt(i));
+//                        }else if(o instanceof Date){
+//                            row.addField(resultSetMetaData.getColumnName(i),rs.getDate(i));
+//                        }else {
+//                            row.addField(resultSetMetaData.getColumnName(i),rs.getString(i));
+//                        }
+//                    }
+                    int tip = resultSetMetaData.getColumnType(i);
+                    if (tip == Types.VARCHAR || tip == Types.CHAR){
+                        row.addField(resultSetMetaData.getColumnName(i),rs.getString(i));
+                    }else if(tip == Types.DATE){
+                        row.addField(resultSetMetaData.getColumnName(i),rs.getDate(i));
+                    }else if(tip == Types.DOUBLE){
+                        row.addField(resultSetMetaData.getColumnName(i),rs.getDouble(i));
+                    }else if(tip == Types.INTEGER){
+                        row.addField(resultSetMetaData.getColumnName(i),rs.getInt(i));
+                    }else
+                        row.addField(resultSetMetaData.getColumnName(i),rs.getObject(i));
+                    //row.addField(resultSetMetaData.getColumnName(i),rs.getString(i));
                 }
                 rows.add(row);
             }

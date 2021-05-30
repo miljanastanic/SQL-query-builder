@@ -51,7 +51,7 @@ public class AppCore extends AppFramework {
         app.run();
         System.out.println(AppCore.getInstance().getKveri() + "main");
         AppCore.getInstance().readDataFromTable(AppCore.getInstance().getKveri());
-        AppCore.getInstance().loadResource();
+        //AppCore.getInstance().loadResource();
     }
 
     private static Settings initialiseSettings(){
@@ -64,10 +64,10 @@ public class AppCore extends AppFramework {
 
     }
 
-    public void loadResource(){
-        InformationResource informationResource = (InformationResource)this.database.loadResource();
-        this.notifySubscribers(new Notification(NotificationCode.RESOURCE_LOADED,informationResource));
-    }
+//    public void loadResource(){
+//        InformationResource informationResource = (InformationResource)this.database.loadResource();
+//        this.notifySubscribers(new Notification(NotificationCode.RESOURCE_LOADED,informationResource));
+//    }
     public void readDataFromTable(String fromTable){
         gui.getTableModel().setRows(this.database.readDataFromTable(fromTable));
     }
