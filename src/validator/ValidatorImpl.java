@@ -99,6 +99,22 @@ public class ValidatorImpl implements Validator {
                 return true;
             }
         });
+        pravila.add(new Rule("Pravilo5", "Bez obzira što je alias opcioni za agregatne funkcije, mora biti postavljen ukoliko se filtrira sa HAVING.") {
+            @Override
+            public boolean check() {
+                for(Query q: queries){
+                    if(ime.contains("Having") && (q.getFunctionName().equalsIgnoreCase("Avg") || q.getFunctionName().equalsIgnoreCase("Min") || q.getFunctionName().equalsIgnoreCase("Max") || q.getFunctionName().equalsIgnoreCase("Count"))){
+                        if(q.getArguments().length == 1){
+                            return false;
+                        }else{
+                            return true;
+                        }
+                    }
+                }
+                return true;
+            }
+        });
+
 
         for (Rule pravilo:pravila) {
             if(!pravilo.check())
