@@ -41,12 +41,18 @@ public class CompilerImpl implements Compiler{
                     }
                 }
                 out += "SELECT" + " ";
-                for (int i = 0; i < parts.get(0).getArguments().length; i++) {
+                int sizearg = parts.get(0).getArguments().length;
+                for (int i = 0; i < sizearg; i++) {
 
                     if(!(flag.isEmpty())){
                         if(parts.get(0).getArguments()[i].equals(flagName)){
-                            out += flag.toLowerCase() + "(" + flagName + ")" + " ";
-                            flag="";
+                            if(sizearg == 1) {
+                                out += flag.toLowerCase() + "(" + flagName + ")" + " ";
+                                flag = "";
+                            }else{
+                                out += flag.toLowerCase() + "(" + flagName + ")" + ",";
+                                flag = "";
+                            }
                         }
                     }else {
                         if (parts.get(0).getArguments()[i].equalsIgnoreCase(alias)) {
