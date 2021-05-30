@@ -81,6 +81,24 @@ public class ValidatorImpl implements Validator {
                 return true;
             }
         });
+        pravila.add(new Rule("Pravilo4", "On mora da trazi iste kolone i operator je =") {
+            @Override
+            public boolean check() {
+                for(Query q: queries){
+                    if(q.getFunctionName().equalsIgnoreCase("On")){
+                        String column_name1 = q.getArguments()[0].split("[.]")[1];
+                        String column_name2 = q.getArguments()[2].split("[.]")[1];
+                        String operator = q.getArguments()[1];
+
+                        if(operator.equals("=") && column_name1.equals(column_name2)){
+                            return true;
+                        }
+                        return false;
+                    }
+                }
+                return true;
+            }
+        });
 
         for (Rule pravilo:pravila) {
             if(!pravilo.check())

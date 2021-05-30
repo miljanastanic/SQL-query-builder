@@ -16,164 +16,184 @@ public class CompilerImpl implements Compiler{
 
     @Override
     public String makeSQLQuery(String s){
-        parts = divider.devide1(s);
-        Collections.sort(parts);
-        String funName;
-        String out = "";
+        try {
+            parts = divider.devide1(s);
+            Collections.sort(parts);
+            String funName;
+            String out = "";
+            String alias = "";
+            String aliasName = "";
 
-        String select =parts.get(0).getFunctionName();
-        if(select.equals("Select")){
-            out += "SELECT" + " ";
-            for(int i=0; i<parts.get(0).getArguments().length; i++){
-                        out+=parts.get(0).getArguments()[i];
-                        if(!(i == (parts.get(0).getArguments().length)-1)){
-                            out+=",";
+            String select = parts.get(0).getFunctionName();
+            if (select.equals("Select")) {
+                for (Query q : parts) {
+                    if ((q.getFunctionName().equals("Avg") || q.getFunctionName().equals("Count")) || (q.getFunctionName().equals("Max") || q.getFunctionName().equals("Min"))) {
+                        System.out.println("nasao je avg");
+                        if (q.getArguments().length > 0) {
+                            alias = q.getArguments()[0];
+                            aliasName = q.getArguments()[1];
+                            System.out.println(alias + aliasName);
                         }
                     }
-                    out+=" ";
-        }else{
-            out += "SELECT " + "*" + " ";
-        }
-        for (Query part: parts) {
+                }
+                out += "SELECT" + " ";
+                for (int i = 0; i < parts.get(0).getArguments().length; i++) {
 
-            funName = part.getFunctionName();
-            //1.Upit nad tabelom
-            if(funName.equalsIgnoreCase("query")){
-                part.setFunctionName("FROM");
-                out +=  part.getFunctionName() + " " + part.getArguments()[0] + " ";
-            }
-            //3.Sortiranje
-            if(funName.equalsIgnoreCase("orderby")){
-                part.setFunctionName("ORDER BY");
-                out +=  part.getFunctionName() + " " + part.getArguments()[0] + " ";
-            }
-            if(funName.equalsIgnoreCase("orderbydesc")){
-                part.setFunctionName("ORDER BY");
-                out +=  part.getFunctionName() + " " + part.getArguments()[0] + " " +"DESC";
-            }
-            if(funName.equalsIgnoreCase("orderbyasc")){
-                part.setFunctionName("ORDER BY");
-                out +=  part.getFunctionName() + " " + part.getArguments()[0] + " " +"ASC";
-            }
-            //4.Filtriranje
-            if(funName.equalsIgnoreCase("where")){
-                String q = part.getArguments()[2].replaceAll("\"", "");
-                String n = q.replaceAll(" ", "");
-                part.setFunctionName("WHERE");
-                out +=  part.getFunctionName() + " " + part.getArguments()[0] + " " + part.getArguments()[1] + " " + Integer.valueOf(n) + " ";
-            }
-            if(funName.equalsIgnoreCase("orwhere")){
-                String q = part.getArguments()[2].replaceAll("\"", "");
-                String n = q.replaceAll(" ", "");
-                part.setFunctionName("OR");
-                out +=  part.getFunctionName() + " " + part.getArguments()[0] + " " + part.getArguments()[1] + " "  + Integer.valueOf(n) + " ";
-            }
-            if(funName.equalsIgnoreCase("andwhere")){
-                String q = part.getArguments()[2].replaceAll("\"", "");
-                String n = q.replaceAll(" ", "");
-                part.setFunctionName("AND");
-                out +=  part.getFunctionName() + " " + part.getArguments()[0] + " " + part.getArguments()[1] + " " +  + Integer.valueOf(n) + " ";
-            }
-            if(funName.equalsIgnoreCase("wherebetween")){
-                String q = part.getArguments()[2].replaceAll("\"", "").replaceAll(" ", "");
-                String n = part.getArguments()[1].replaceAll("\"", "").replaceAll(" ", "");
-                part.setFunctionName("WHERE");
-                out +=  part.getFunctionName() + " " + part.getArguments()[0] +  " " + "BETWEEN" + " " + Integer.valueOf(n) + " " + "AND" + " " + Integer.valueOf(q) + " " ;
-            }
-            if(funName.equalsIgnoreCase("wherein")){
-                part.setFunctionName("WHERE");
-                out +=  part.getFunctionName() + " "+ part.getArguments()[0] + " " +"IN"+ " " + "(";
-                for(int j=1; j < part.getArguments().length; j++){
-                    String q = part.getArguments()[j].replaceAll("\"", "");
-                    String n = q.replaceAll(" ", "");
-                    out+=Integer.valueOf(n);
-                    if(!(j == (part.getArguments().length)-1)){
-                        out+=" " + ",";
+                    if (parts.get(0).getArguments()[i].equalsIgnoreCase(alias)) {
+                        out += parts.get(0).getArguments()[i] + " " + "AS" + " " + aliasName;
+                    } else {
+                        out += parts.get(0).getArguments()[i];
+                    }
+                    if (!(i == (parts.get(0).getArguments().length) - 1)) {
+                        out += ",";
                     }
                 }
-                out+=")" ;
+                out += " ";
+            } else {
+                out += "SELECT " + "*" + " ";
             }
-            //5.Spajanje tabela
-            if(funName.equalsIgnoreCase("join")){
-                part.setFunctionName("JOIN");
-                out+= part.getFunctionName() + " " + part.getArguments()[0] + " ";
-            }
-            if(funName.equalsIgnoreCase("on")){
-                part.setFunctionName("USING");
-                out+= part.getFunctionName() + " ";
+            for (Query part : parts) {
 
-                String column_name1 = part.getArguments()[0].split("[.]")[1];
-                String column_name2 = part.getArguments()[2].split("[.]")[1];
-                String operator = part.getArguments()[1];
-
-                if(operator.equals("=") && column_name1.equals(column_name2)){
-                    out+= "(" + column_name1 + ") " ;
+                funName = part.getFunctionName();
+                //1.Upit nad tabelom
+                if (funName.equalsIgnoreCase("query")) {
+                    part.setFunctionName("FROM");
+                    out += part.getFunctionName() + " " + part.getArguments()[0] + " ";
                 }
-            }
-            //6.Stringovne operacije (where department_name like 'S%')
-            if(funName.equalsIgnoreCase("whereendswith")) {
-                String n = part.getArguments()[1].replaceAll("\"", "").replaceAll(" ", "");
-                part.setFunctionName("WHERE");
-                out += part.getFunctionName() + " " + part.getArguments()[0] + " " + "like" + " " + "'" + "%" + n + "'" ;
-            }
-            if(funName.equalsIgnoreCase("wherestartswith")) {
-                String n = part.getArguments()[1].replaceAll("\"", "").replaceAll(" ", "");;
-                part.setFunctionName("WHERE");
-                out += part.getFunctionName() + " " + part.getArguments()[0] + " " + "like" + " " + "'" + n + "%" + "'" ;
-            }
-            if(funName.equalsIgnoreCase("wherecontains")) {
-                String n = part.getArguments()[1].replaceAll("\"", "").replaceAll(" ", "");;
-                part.setFunctionName("WHERE");
-                out += part.getFunctionName() + " " + part.getArguments()[0] + " " + "like" + " " + "'"+ "%" + n + "%" + "'" ;
-            }
-            //7.Funkcije agregacije
-            if(funName.equalsIgnoreCase("avg")){
-                part.setFunctionName("avg");
-                out += part.getFunctionName() + "(" + part.getArguments()[0] + ")" ;
-            }
-            if(funName.equalsIgnoreCase("count")){
-                part.setFunctionName("count");
-                out += part.getFunctionName() + "(" + part.getArguments()[0] + ")" ;
-            }
-            if(funName.equalsIgnoreCase("min")){
-                part.setFunctionName("min");
-                out += part.getFunctionName() + "(" + part.getArguments()[0] + ")" ;
-            }
-            if(funName.equalsIgnoreCase("max")){
-                part.setFunctionName("max");
-                out += part.getFunctionName() + "(" + part.getArguments()[0] + ")" ;
-            }
-            if(funName.equalsIgnoreCase("groupby")){
-                part.setFunctionName("GROUP BY");
-                out += part.getFunctionName() + " ";
-                for(int j=0; j < part.getArguments().length; j++){
-                    out+=part.getArguments()[j];
-                    if(!(j == (part.getArguments().length)-1)){
-                        out+= " " + ",";
+                //3.Sortiranje
+                if (funName.equalsIgnoreCase("orderby")) {
+                    part.setFunctionName("ORDER BY");
+                    out += part.getFunctionName() + " " + part.getArguments()[0] + " ";
+                }
+                if (funName.equalsIgnoreCase("orderbydesc")) {
+                    part.setFunctionName("ORDER BY");
+                    out += part.getFunctionName() + " " + part.getArguments()[0] + " " + "DESC";
+                }
+                if (funName.equalsIgnoreCase("orderbyasc")) {
+                    part.setFunctionName("ORDER BY");
+                    out += part.getFunctionName() + " " + part.getArguments()[0] + " " + "ASC";
+                }
+                //4.Filtriranje
+                if (funName.equalsIgnoreCase("where")) {
+                    part.setFunctionName("WHERE");
+                    if (part.getArguments()[2].startsWith("\'")) {
+                        out += part.getFunctionName() + " " + part.getArguments()[0] + " " + part.getArguments()[1] + " " + part.getArguments()[2] + " ";
+                    } else {
+                        out += part.getFunctionName() + " " + part.getArguments()[0] + " " + part.getArguments()[1] + " " + Integer.valueOf(part.getArguments()[2]) + " ";
                     }
-
                 }
-                out+=" ";
+                if (funName.equalsIgnoreCase("orwhere")) {
+                    part.setFunctionName("OR");
+                    if (part.getArguments()[2].startsWith("\'")) {
+                        out += part.getFunctionName() + " " + part.getArguments()[0] + " " + part.getArguments()[1] + " " + part.getArguments()[2] + " ";
+                    } else {
+                        out += part.getFunctionName() + " " + part.getArguments()[0] + " " + part.getArguments()[1] + " " + Integer.valueOf(part.getArguments()[2]) + " ";
+                    }
+                }
+                if (funName.equalsIgnoreCase("andwhere")) {
+                    part.setFunctionName("AND");
+                    if (part.getArguments()[2].startsWith("\'")) {
+                        out += part.getFunctionName() + " " + part.getArguments()[0] + " " + part.getArguments()[1] + " " + part.getArguments()[2] + " ";
+                    } else {
+                        out += part.getFunctionName() + " " + part.getArguments()[0] + " " + part.getArguments()[1] + " " + Integer.valueOf(part.getArguments()[2]) + " ";
+                    }
+                }
+                if (funName.equalsIgnoreCase("wherebetween")) {
+                    part.setFunctionName("WHERE");
+                    out += part.getFunctionName() + " " + part.getArguments()[0] + " " + "BETWEEN" + " " + Integer.valueOf(part.getArguments()[1]) + " " + "AND" + " " + Integer.valueOf(part.getArguments()[2]) + " ";
+                }
+                if (funName.equalsIgnoreCase("wherein")) {
+                    part.setFunctionName("WHERE");
+                    out += part.getFunctionName() + " " + part.getArguments()[0] + " " + "IN" + " " + "(";
+                    for (int j = 1; j < part.getArguments().length; j++) {
+                        out += Integer.valueOf(part.getArguments()[j]);
+                        if (!(j == (part.getArguments().length) - 1)) {
+                            out += " " + ",";
+                        }
+                    }
+                    out += ")";
+                }
+                //5.Spajanje tabela
+                if (funName.equalsIgnoreCase("join")) {
+                    part.setFunctionName("JOIN");
+                    out += part.getFunctionName() + " " + part.getArguments()[0] + " ";
+                }
+                if (funName.equalsIgnoreCase("on")) {
+                    part.setFunctionName("USING");
+                    String column_name1 = part.getArguments()[0].split("[.]")[1];
+                    out += part.getFunctionName() + " " + "(" + column_name1 + ") ";
+                }
+                //6.Stringovne operacije (where department_name like 'S%')
+                if (funName.equalsIgnoreCase("whereendswith")) {
+                    String n = part.getArguments()[1].replaceAll("\"", "").replaceAll(" ", "");
+                    part.setFunctionName("WHERE");
+                    out += part.getFunctionName() + " " + part.getArguments()[0] + " " + "like" + " " + "'" + "%" + n + "'";
+                }
+                if (funName.equalsIgnoreCase("wherestartswith")) {
+                    String n = part.getArguments()[1].replaceAll("\"", "").replaceAll(" ", "");
+                    ;
+                    part.setFunctionName("WHERE");
+                    out += part.getFunctionName() + " " + part.getArguments()[0] + " " + "like" + " " + "'" + n + "%" + "'";
+                }
+                if (funName.equalsIgnoreCase("wherecontains")) {
+                    String n = part.getArguments()[1].replaceAll("\"", "").replaceAll(" ", "");
+                    ;
+                    part.setFunctionName("WHERE");
+                    out += part.getFunctionName() + " " + part.getArguments()[0] + " " + "like" + " " + "'" + "%" + n + "%" + "'";
+                }
+                //7.Funkcije agregacije
+                if (funName.equalsIgnoreCase("avg")) {
+                    part.setFunctionName("avg");
+                    out += part.getFunctionName() + "(" + part.getArguments()[0] + ")";
+                }
+                if (funName.equalsIgnoreCase("count")) {
+                    part.setFunctionName("count");
+                    out += part.getFunctionName() + "(" + part.getArguments()[0] + ")";
+                }
+                if (funName.equalsIgnoreCase("min")) {
+                    part.setFunctionName("min");
+                    out += part.getFunctionName() + "(" + part.getArguments()[0] + ")";
+                }
+                if (funName.equalsIgnoreCase("max")) {
+                    part.setFunctionName("max");
+                    out += part.getFunctionName() + "(" + part.getArguments()[0] + ")";
+                }
+                if (funName.equalsIgnoreCase("groupby")) {
+                    part.setFunctionName("GROUP BY");
+                    out += part.getFunctionName() + " ";
+                    for (int j = 0; j < part.getArguments().length; j++) {
+                        out += part.getArguments()[j];
+                        if (!(j == (part.getArguments().length) - 1)) {
+                            out += " " + ",";
+                        }
+
+                    }
+                    out += " ";
+                }
+                if (funName.equalsIgnoreCase("having")) {
+                    part.setFunctionName("HAVING");
+                    out += part.getFunctionName() + " " + part.getArguments()[0] + " " + part.getArguments()[1] + " " + part.getArguments()[2] + " ";
+                }
+                if (funName.equalsIgnoreCase("andhaving")) {
+                    part.setFunctionName("HAVING");
+                    out += part.getFunctionName() + " " + part.getArguments()[0] + " " + "AND" + " " + part.getArguments()[1] + " " + part.getArguments()[2] + " ";
+                }
+                if (funName.equalsIgnoreCase("orhaving")) {
+                    part.setFunctionName("HAVING");
+                    out += part.getFunctionName() + " " + part.getArguments()[0] + " " + "OR" + " " + part.getArguments()[1] + " " + part.getArguments()[2] + " ";
+                }
+
+                //OSTALI SU 8.PODUPITI.
+                //out +=  part.getFunctionName() + " " + part.toString();
+                //out +=  funName.toLowerCase() + " " + Arrays.toString(part.getArguments()) + " ";
             }
-            if(funName.equalsIgnoreCase("having")){
-                part.setFunctionName("HAVING");
-                out +=  part.getFunctionName() + " " + part.getArguments()[0] + " " + part.getArguments()[1]+ " " + part.getArguments()[2] + " ";
-            }
-            if(funName.equalsIgnoreCase("andhaving")){
-                part.setFunctionName("HAVING");
-                out +=  part.getFunctionName() + " " + part.getArguments()[0] + " " + "AND" + " " + part.getArguments()[1] + " " + part.getArguments()[2] + " ";
-            }
-            if(funName.equalsIgnoreCase("orhaving")){
-                part.setFunctionName("HAVING");
-                out +=  part.getFunctionName() + " " + part.getArguments()[0] + " " + "OR" + " " + part.getArguments()[1] + " " + part.getArguments()[2] + " ";
-            }
-            //OSTALI SU 8.PODUPITI.
-            //out +=  part.getFunctionName() + " " + part.toString();
-            //out +=  funName.toLowerCase() + " " + Arrays.toString(part.getArguments()) + " ";
+            divider.remove();
+            System.out.println(out);
+            return out;
+        }catch (Exception e){
+            System.out.println("pogresna sintaksa");
+            return null;
         }
-        divider.remove();
-        System.out.println(out);
-        return out;
     }
 
 }
