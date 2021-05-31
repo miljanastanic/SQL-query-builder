@@ -14,6 +14,9 @@ import java.awt.event.KeyEvent;
 public class RunButton extends AbstractActionManager{
 
     private String bulitQuery;
+    private String s;
+    private String m;
+    private boolean check;
 
     public RunButton() {
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
@@ -24,25 +27,29 @@ public class RunButton extends AbstractActionManager{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String s = MainFrame.getInstance().getText();
-        String m;
-        boolean check;
+        s = MainFrame.getInstance().getText();
+       // check = AppCore.getInstance().getValidator().valid(s);
         if(s!=null) {
             if (AppCore.getInstance().getValidator().valid(s)) {
                 m = AppCore.getInstance().getCompiler().makeSQLQuery(s);
+                //s = "";
                 AppCore.getInstance().uzmiQuery(m);
+                m = "";
                 //AppCore.getInstance().setKveri(AppCore.getInstance().getCompiler().makeSQLQuery(s));
 
                 //AppCore.getInstance().readDataFromTable(AppCore.getInstance().getKveri());
                 //AppCore.getInstance().loadResource();
                 //AppCore.getInstance().getCompiler().makeSQLQuery(s);
+                s=null;
             } else {
                 AppCore.getInstance().getErrorHandler().generateError(Type.CANNOT_COMPILE);
+              //  s = "";
+                //check = true;
 
             }
-           // s = null;
+
         }else{
-            //System.out.println("aaa");
+            //s = "";
             AppCore.getInstance().getErrorHandler().generateError(Type.CANNOT_COMPILE);
         }
     }

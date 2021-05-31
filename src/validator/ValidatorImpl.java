@@ -17,14 +17,18 @@ public class ValidatorImpl implements Validator {
     private String help = "";
     @Override
     public boolean valid(String s) {
+        if(pravila.isEmpty() == false) {
+            removeAllp();
+        }
+        System.out.println(s + "validator 1");
         queries = divider.devide1(s);
         pravila.add(new Rule("Pravilo1","Nakon Join-a mora ici On.") {
             @Override
             public boolean check() {
                 ime = s;
-                System.out.println(ime);
-                if(ime.contains("Join")){
-                    if(ime.contains("On")) {
+               System.out.println(s + "validator2");
+                if(s.contains("Join")){
+                    if(s.contains("On")) {
                         return true;
                     }else{
                         return false;
@@ -114,12 +118,15 @@ public class ValidatorImpl implements Validator {
 
 
         for (Rule pravilo:pravila) {
-            if(!pravilo.check())
+            if(!pravilo.check()) {
+
                 return false;
+            }
 
         }
         divider.remove();
         return true;
+
     }
 
     public String getHelp(String[] arguments){
@@ -128,6 +135,11 @@ public class ValidatorImpl implements Validator {
             s += arguments[i] + " ";
         }
         return s;
+    }
+    public void removeAllp() {
+       // if (!pravila.isEmpty()) {
+            pravila.clear();
+        //}
     }
 
 }
