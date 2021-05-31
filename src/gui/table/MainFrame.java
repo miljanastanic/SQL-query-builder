@@ -127,7 +127,6 @@ public class MainFrame extends JFrame implements Subscriber {
     }
 
     public void showError(Error notification){
-        System.out.println("aaa");
         JOptionPane.showMessageDialog(this, notification.getMessage(), notification.getTitle(), JOptionPane.WARNING_MESSAGE);
     }
 }

@@ -7,8 +7,6 @@ import database.DatabaseImpl;
 import database.repositories.MSSQLrepository;
 import database.settings.Settings;
 import database.settings.SettingsImpl;
-import divider.Divider;
-import divider.DividerImpl;
 import errorHandler.ErrorHandler;
 import errorHandler.ErrorHandlerImpl;
 import gui.GUIImpl;
@@ -16,8 +14,6 @@ import gui.table.GUI;
 import gui.table.TableModel;
 import observer.Notification;
 import observer.NotificationCode;
-import observer.PublisherImpl;
-import resource.implementation.InformationResource;
 import utils.Constants;
 import validator.Validator;
 import validator.ValidatorImpl;
@@ -25,7 +21,7 @@ import validator.ValidatorImpl;
 public class AppCore extends AppFramework {
 
     private static AppCore instance;
-    private String kveri = "SELECT * FROM EMPLOYEES";
+    //private String kveri = "SELECT * FROM EMPLOYEES";
 
     private AppCore() {
 
@@ -47,14 +43,15 @@ public class AppCore extends AppFramework {
         Compiler compiler = new CompilerImpl();
         ErrorHandler errorHandler = new ErrorHandlerImpl();
         errorHandler.addSubsriber(gui);
+        app.addSubscriber(gui);
         app.initialise(gui,errorHandler,settings,database,validator,compiler);
         app.run();
-        System.out.println(AppCore.getInstance().getKveri() + "main");
-        AppCore.getInstance().readDataFromTable(AppCore.getInstance().getKveri());
+        //System.out.println(AppCore.getInstance().getKveri() + "main");
+       // AppCore.getInstance().readDataFromTable(AppCore.getInstance().getKveri());
         //AppCore.getInstance().loadResource();
     }
 
-    private static Settings initialiseSettings(){
+    public static Settings initialiseSettings(){
         Settings settingsImpl = new SettingsImpl();
         settingsImpl.addParameter("mssql_ip", Constants.MSSQL_IP);
         settingsImpl.addParameter("mssql_database", Constants.MSSQL_DATABASE);
@@ -68,9 +65,9 @@ public class AppCore extends AppFramework {
 //        InformationResource informationResource = (InformationResource)this.database.loadResource();
 //        this.notifySubscribers(new Notification(NotificationCode.RESOURCE_LOADED,informationResource));
 //    }
-    public void readDataFromTable(String fromTable){
-        gui.getTableModel().setRows(this.database.readDataFromTable(fromTable));
-    }
+//    public void readDataFromTable(String fromTable){
+//        gui.getTableModel().setRows(this.database.readDataFromTable(fromTable));
+//    }
 
 //    public TableModel getTableModel() {
 //        return gui.getTableModel();
@@ -88,6 +85,10 @@ public class AppCore extends AppFramework {
         return errorHandler;
     }
 
+    public void uzmiQuery(String s){
+        this.notifySubscribers(new Notification(NotificationCode.DATA_UPDATER,s));
+    }
+
 
     public Settings getSettings(){
         return settings;
@@ -99,11 +100,11 @@ public class AppCore extends AppFramework {
 
     }
 
-    public String getKveri() {
-        return kveri;
-    }
-
-    public void setKveri(String kveri) {
-        this.kveri = kveri;
-    }
+//    public String getKveri() {
+//        return kveri;
+//    }
+//
+//    public void setKveri(String kveri) {
+//        this.kveri = kveri;
+//    }
 }

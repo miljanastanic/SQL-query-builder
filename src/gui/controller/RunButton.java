@@ -25,11 +25,15 @@ public class RunButton extends AbstractActionManager{
     @Override
     public void actionPerformed(ActionEvent e) {
         String s = MainFrame.getInstance().getText();
-
+        String m;
+        boolean check;
         if(s!=null) {
             if (AppCore.getInstance().getValidator().valid(s)) {
-                AppCore.getInstance().setKveri(AppCore.getInstance().getCompiler().makeSQLQuery(s));
-                AppCore.getInstance().readDataFromTable(AppCore.getInstance().getKveri());
+                m = AppCore.getInstance().getCompiler().makeSQLQuery(s);
+                AppCore.getInstance().uzmiQuery(m);
+                //AppCore.getInstance().setKveri(AppCore.getInstance().getCompiler().makeSQLQuery(s));
+
+                //AppCore.getInstance().readDataFromTable(AppCore.getInstance().getKveri());
                 //AppCore.getInstance().loadResource();
                 //AppCore.getInstance().getCompiler().makeSQLQuery(s);
             } else {
@@ -37,9 +41,9 @@ public class RunButton extends AbstractActionManager{
 
             }
            // s = null;
-        }/*else{
-            System.out.println("aaa");
+        }else{
+            //System.out.println("aaa");
             AppCore.getInstance().getErrorHandler().generateError(Type.CANNOT_COMPILE);
-        }*/
+        }
     }
 }
