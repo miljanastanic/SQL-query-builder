@@ -121,9 +121,9 @@ public class ValidatorImpl implements Validator {
                 for(Query q: queries){
                     if(ime.contains("Having") && (q.getFunctionName().equalsIgnoreCase("Avg") || q.getFunctionName().equalsIgnoreCase("Min") || q.getFunctionName().equalsIgnoreCase("Max") || q.getFunctionName().equalsIgnoreCase("Count"))){
                         if(q.getArguments().length == 1){
-                            return false;
-                        }else{
                             return true;
+                        }else{
+                            return false;
                         }
                     }
                 }
