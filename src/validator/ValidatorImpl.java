@@ -25,13 +25,11 @@ public class ValidatorImpl implements Validator {
         if(pravila.isEmpty() == false) {
             removeAllp();
         }
-        System.out.println(s + "validator 1");
         queries = divider.devide1(s);
         pravila.add(new Rule("Pravilo1","Nakon Join-a mora ici On.") {
             @Override
             public boolean check() {
                 ime = s;
-               System.out.println(s + "validator2");
                 if(s.contains("Join")){
                     if(s.contains("On")) {
                         return true;

@@ -188,12 +188,26 @@ public class CompilerImpl implements Compiler{
                     out += part.getArguments()[1] + " " + Integer.valueOf(part.getArguments()[2]) + " ";
                 }
                 if (funName.equalsIgnoreCase("andhaving")) {
-                    part.setFunctionName("HAVING");
-                    out += part.getFunctionName() + " " + part.getArguments()[0] + " " + "AND" + " " + part.getArguments()[1] + " " + part.getArguments()[2] + " ";
+                    part.setFunctionName("AND");
+
+                    out += part.getFunctionName() + " " ;
+                    for(Query q: parts){
+                        if((q.getFunctionName().equals("Avg") || q.getFunctionName().equals("Count")) || (q.getFunctionName().equals("Max") || q.getFunctionName().equals("Min"))){
+                            out += q.getFunctionName().toLowerCase() + "(" + q.getArguments()[0] + ")" + " ";
+                        }
+                    }
+                    out += part.getArguments()[1] + " " + Integer.valueOf(part.getArguments()[2]) + " ";
                 }
                 if (funName.equalsIgnoreCase("orhaving")) {
-                    part.setFunctionName("HAVING");
-                    out += part.getFunctionName() + " " + part.getArguments()[0] + " " + "OR" + " " + part.getArguments()[1] + " " + part.getArguments()[2] + " ";
+                    part.setFunctionName("OR");
+
+                    out += part.getFunctionName() + " " ;
+                    for(Query q: parts){
+                        if((q.getFunctionName().equals("Avg") || q.getFunctionName().equals("Count")) || (q.getFunctionName().equals("Max") || q.getFunctionName().equals("Min"))){
+                            out += q.getFunctionName().toLowerCase() + "(" + q.getArguments()[0] + ")" + " ";
+                        }
+                    }
+                    out += part.getArguments()[1] + " " + Integer.valueOf(part.getArguments()[2]) + " ";
                 }
 
                 //OSTALI SU 8.PODUPITI.
