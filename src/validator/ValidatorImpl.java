@@ -59,6 +59,11 @@ public class ValidatorImpl implements Validator {
                             alias = q;
                         }
                     }
+                    if(select.getArguments().length == alias.getArguments().length){
+                        if(getHelp(select.getArguments()).equals(getHelp(select.getArguments()))){
+                            return true;
+                        }
+                    }
                     for(int i = 0; i<select.getArguments().length; i++){
                         if((getHelp(select.getArguments()).contains(getHelp(alias.getArguments())))){
                             if(!ime.contains("GroupBy")){
