@@ -140,8 +140,6 @@ public class MSSQLrepository implements Repository{
         }finally {
             this.closeConnection();
         }
-        System.out.println("******");
-        System.out.println(rows);
         return rows;
     }
 }

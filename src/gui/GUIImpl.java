@@ -36,11 +36,8 @@ public class GUIImpl implements GUI {
 
     @Override
     public void update(Notification notification) {
-        System.out.println("update");
         Object o = notification.getData();
          if(o instanceof String){
-            System.out.println("uslo observer");
-            System.out.println(o);
             //this.setQuery((String) o);
             readDataFromTable((String) o);
         }else if(o instanceof Error){

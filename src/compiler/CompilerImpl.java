@@ -33,7 +33,6 @@ public class CompilerImpl implements Compiler{
                         if (q.getArguments().length == 2) {
                             alias = q.getArguments()[0];
                             aliasName = q.getArguments()[1];
-                            System.out.println(alias + aliasName);
                         }else if(q.getArguments().length == 1){
                             flag = q.getFunctionName();
                             flagName = q.getArguments()[0];
@@ -218,7 +217,6 @@ public class CompilerImpl implements Compiler{
             System.out.println(out);
             return out;
         }catch (Exception e){
-            System.out.println("pogresna sintaksa");
             return null;
         }
     }

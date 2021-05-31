@@ -3,8 +3,6 @@ package validator;
 import divider.Divider;
 import divider.DividerImpl;
 import divider.Query;
-import gui.table.MainFrame;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +20,7 @@ public class ValidatorImpl implements Validator {
 
     @Override
     public boolean valid(String s) {
-        if(pravila.isEmpty() == false) {
+        if(!pravila.isEmpty()) {
             removeAllp();
         }
         queries = divider.devide1(s);
@@ -147,11 +145,11 @@ public class ValidatorImpl implements Validator {
     }
 
     public String getHelp(String[] arguments){
-        String s = "";
-        for(int i=0 ; i<arguments.length; i++){
-            s += arguments[i] + " ";
+        StringBuilder s = new StringBuilder();
+        for (String argument : arguments) {
+            s.append(argument).append(" ");
         }
-        return s;
+        return s.toString();
     }
     public void removeAllp() {
        // if (!pravila.isEmpty()) {
