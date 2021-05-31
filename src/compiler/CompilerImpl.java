@@ -176,9 +176,16 @@ public class CompilerImpl implements Compiler{
                     }
                     out += " ";
                 }
+                //having max(salary)>10000
                 if (funName.equalsIgnoreCase("having")) {
                     part.setFunctionName("HAVING");
-                    out += part.getFunctionName() + " " + part.getArguments()[0] + " " + part.getArguments()[1] + " " + part.getArguments()[2] + " ";
+                    out += part.getFunctionName() + " " ;
+                    for(Query q: parts){
+                        if((q.getFunctionName().equals("Avg") || q.getFunctionName().equals("Count")) || (q.getFunctionName().equals("Max") || q.getFunctionName().equals("Min"))){
+                            out += q.getFunctionName().toLowerCase() + "(" + q.getArguments()[0] + ")" + " ";
+                        }
+                    }
+                    out += part.getArguments()[1] + " " + Integer.valueOf(part.getArguments()[2]) + " ";
                 }
                 if (funName.equalsIgnoreCase("andhaving")) {
                     part.setFunctionName("HAVING");
