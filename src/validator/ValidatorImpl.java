@@ -36,29 +36,26 @@ public class ValidatorImpl implements Validator {
         pravila.add(new Rule("Pravilo2","sve što je selektovano a nije pod funkcijom agregacije, mora ući u group by.") {
             @Override
             public boolean check() {
-                if(ime.contains("Select") && ime.contains("GroupBy") && ((ime.contains("Min") || ime.contains("Max")) || (ime.contains("Avg") || ime.contains("Count")))){
-                    for (Query q:queries) {
-                        if(q.getFunctionName().equals("Select")){
-                            help += getHelp(q.getArguments());
-                        }
+                if (ime.contains("Select") && ((ime.contains("Min") || ime.contains("Max")) || (ime.contains("Avg") || ime.contains("Count")))) {
+                    for (Query q: queries){
                         if((q.getFunctionName().equals("Avg") || q.getFunctionName().equals("Min")) || (q.getFunctionName().equals("Max") || q.getFunctionName().equals("Count"))){
-                            if(help.equalsIgnoreCase(getHelp(q.getArguments()))){
-                                help = "";
-                                return false;
-                            }
-                        }
-
-                    }
-                    for (Query q:queries) {
-                        if(q.getFunctionName().equals("GroupBy")){
-                            if(help.equals(q.getArguments().toString())){
-                                help = "";
-                                return true;
+                            if(getHelp(queries.get(0).getArguments()).contains(getHelp(q.getArguments()))){
+                                if(queries.get(0).getArguments().length>1){
+                                    for (Query q1:queries) {
+                                        if(q1.getFunctionName().equals("GroupBy")){
+                                            if(getHelp(queries.get(0).getArguments()).contains(getHelp(q1.getArguments()))){
+                                                return true;
+                                            }else{
+                                                return false;
+                                            }
+                                        }
+                                    }
+                                    return false;
+                                }
                             }
                         }
                     }
                 }
-
                 return true;
             }
         });
