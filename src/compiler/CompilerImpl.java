@@ -136,9 +136,14 @@ public class CompilerImpl implements Compiler{
                     out += part.getFunctionName() + " " + part.getArguments()[0] + " ";
                 }
                 if (funName.equalsIgnoreCase("on")) {
-                    part.setFunctionName("USING");
+                    part.setFunctionName("ON");
                     String column_name1 = part.getArguments()[0].split("[.]")[1];
-                    out += part.getFunctionName() + " " + "(" + column_name1 + ") ";
+                    out += part.getFunctionName() + " " + "(" ;
+                    //+ part.getArguments().toString() + ") ";
+                    for(int i = 0; i<part.getArguments().length; i++){
+                        out += " " + part.getArguments()[i];
+                    }
+                    out += " " + ")" + " ";
                 }
                 //6.Stringovne operacije (where department_name like 'S%')
                 if (funName.equalsIgnoreCase("whereendswith")) {
