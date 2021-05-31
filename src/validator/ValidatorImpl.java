@@ -15,6 +15,11 @@ public class ValidatorImpl implements Validator {
     private Divider divider = new DividerImpl();
     private List<Query> queries;
     private String help = "";
+    private boolean flag;
+    private Query select;
+    private Query alias;
+    private Query groupby;
+
     @Override
     public boolean valid(String s) {
         if(pravila.isEmpty() == false) {
@@ -40,22 +45,31 @@ public class ValidatorImpl implements Validator {
         pravila.add(new Rule("Pravilo2","sve što je selektovano a nije pod funkcijom agregacije, mora ući u group by.") {
             @Override
             public boolean check() {
-                if (ime.contains("Select") && ((ime.contains("Min") || ime.contains("Max")) || (ime.contains("Avg") || ime.contains("Count")))) {
-                    for (Query q: queries){
-                        if((q.getFunctionName().equals("Avg") || q.getFunctionName().equals("Min")) || (q.getFunctionName().equals("Max") || q.getFunctionName().equals("Count"))){
-                            if(getHelp(queries.get(0).getArguments()).contains(getHelp(q.getArguments()))){
-                                if(queries.get(0).getArguments().length>1){
-                                    for (Query q1:queries) {
-                                        if(q1.getFunctionName().equals("GroupBy")){
-                                            if(getHelp(queries.get(0).getArguments()).contains(getHelp(q1.getArguments()))){
-                                                return true;
-                                            }else{
-                                                return false;
-                                            }
-                                        }
-                                    }
-                                    return false;
-                                }
+                select = queries.get(0);
+                flag = false;
+                if(ime.contains("Select") && (ime.contains("Min") || ime.contains("Max")) || (ime.contains("Avg") || ime.contains("Count"))){
+                    flag = true;
+                }
+                if(flag){
+                    for (Query q: queries) {
+                        if(q.getFunctionName().equals("GroupBy")){
+                            groupby = q;
+                        }
+                        if(q.getFunctionName().equalsIgnoreCase("Avg") || q.getFunctionName().equalsIgnoreCase("Min") || q.getFunctionName().equalsIgnoreCase("Max") || q.getFunctionName().equalsIgnoreCase("Count")){
+                            alias = q;
+                        }
+                    }
+                    for(int i = 0; i<select.getArguments().length; i++){
+                        if((getHelp(select.getArguments()).contains(getHelp(alias.getArguments())))){
+                            if(!ime.contains("GroupBy")){
+                                return false;
+                            }
+                        }
+                    }
+                    for(int i = 0; i<select.getArguments().length; i++){
+                        if(!getHelp(groupby.getArguments()).contains(select.getArguments()[i])){
+                            if(!(getHelp(alias.getArguments())).contains(select.getArguments()[i])) {
+                                return false;
                             }
                         }
                     }
