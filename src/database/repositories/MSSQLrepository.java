@@ -10,6 +10,7 @@ import resource.implementation.Entity;
 import resource.implementation.InformationResource;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +19,9 @@ public class MSSQLrepository implements Repository{
 
     private Settings settings;
     private Connection connection;
+
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy");
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
 
     public MSSQLrepository(Settings settings){
         this.settings = settings;
@@ -109,12 +113,20 @@ public class MSSQLrepository implements Repository{
 //                        }
 //                    }
                     int tip = resultSetMetaData.getColumnType(i);
-                    if (tip == Types.VARCHAR || tip == Types.CHAR){
+                    if (tip == Types.VARCHAR || tip == Types.CHAR) {
+                        if(resultSetMetaData.getColumnName(i).equalsIgnoreCase("hire_date")){
+                        String dateString = rs.getString(i);
+                        Date date = sdf.parse(dateString);
+                        String date1 = simpleDateFormat.format(date);
+                        row.addField(resultSetMetaData.getColumnName(i), date1);
+                    } else
                         row.addField(resultSetMetaData.getColumnName(i),rs.getString(i));
                     }else if(tip == Types.DATE){
                         row.addField(resultSetMetaData.getColumnName(i),rs.getDate(i));
                     }else if(tip == Types.DOUBLE){
                         row.addField(resultSetMetaData.getColumnName(i),rs.getDouble(i));
+                    }else if(tip == Types.TIMESTAMP) {
+                        row.addField(resultSetMetaData.getColumnName(i),simpleDateFormat.format(rs.getTimestamp(i)));
                     }else if(tip == Types.INTEGER){
                         row.addField(resultSetMetaData.getColumnName(i),rs.getInt(i));
                     }else

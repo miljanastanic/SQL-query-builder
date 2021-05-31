@@ -21,7 +21,7 @@ import validator.ValidatorImpl;
 public class AppCore extends AppFramework {
 
     private static AppCore instance;
-    //private String kveri = "SELECT * FROM EMPLOYEES";
+
 
     private AppCore() {
 
