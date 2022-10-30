@@ -92,10 +92,15 @@ public class CompilerImpl implements Compiler{
                 //4.Filtriranje
                 if (funName.equalsIgnoreCase("where")) {
                     part.setFunctionName("WHERE");
-                    if (part.getArguments()[2].startsWith("\'")) {
-                        out += part.getFunctionName() + " " + part.getArguments()[0] + " " + part.getArguments()[1] + " " + part.getArguments()[2] + " ";
-                    } else {
-                        out += part.getFunctionName() + " " + part.getArguments()[0] + " " + part.getArguments()[1] + " " + Integer.valueOf(part.getArguments()[2]) + " ";
+                    if(part.getArguments()[0].equals("hire_date")){
+                        System.out.println("hire_date");
+                        out+= part.getFunctionName() + " " + part.getArguments()[0] + " " + part.getArguments()[1] + " " + "convert(date," + "\'" + part.getArguments()[2] + "\'"+ ",6)" + " ";
+                    }else {
+                        if (part.getArguments()[2].startsWith("\'")) {
+                            out += part.getFunctionName() + " " + part.getArguments()[0] + " " + part.getArguments()[1] + " " + part.getArguments()[2] + " ";
+                        } else {
+                            out += part.getFunctionName() + " " + part.getArguments()[0] + " " + part.getArguments()[1] + " " + Integer.valueOf(part.getArguments()[2]) + " ";
+                        }
                     }
                 }
                 if (funName.equalsIgnoreCase("orwhere")) {

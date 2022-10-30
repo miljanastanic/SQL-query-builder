@@ -28,6 +28,7 @@ public class RunButton extends AbstractActionManager{
     @Override
     public void actionPerformed(ActionEvent e) {
         s = MainFrame.getInstance().getText();
+        System.out.println(s);
        // check = AppCore.getInstance().getValidator().valid(s);
         if(s!=null) {
             if (AppCore.getInstance().getValidator().valid(s)) {
